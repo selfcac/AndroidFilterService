@@ -4,11 +4,42 @@
              xmlns:local="clr-namespace:AndroidApp"
              x:Class="AndroidApp.MainPage">
 
-    <StackLayout>
-        <!-- Place new controls here -->
-        <Label Text="Welcome to Xamarin.Forms!" 
-           HorizontalOptions="Center"
-           VerticalOptions="CenterAndExpand" />
-    </StackLayout>
+    <ScrollView>
+        <StackLayout>
+            <StackLayout BackgroundColor="Green" Margin="5">
+                <Label Text="Allowed actions" 
+                   HorizontalOptions="Center" FontAttributes="Bold" />
+                <Button Text="Is unlocked?" ></Button>
+                <StackLayout Orientation="Horizontal">
+                    <Button Text="Serivce Start" ></Button>
+                    <Button Text="Test" ></Button>
+                    <Button Text="Stop" ></Button>
+                </StackLayout>
+               
+                <Button Text="Start Filtering" ></Button>
+                
+                <Button Text="Add wifi to blacklist" ></Button>
+            </StackLayout>
+
+            <StackLayout BackgroundColor="LightYellow" Margin="5">
+                <Label Text="Unlock" 
+                   TextColor="Black"
+                   HorizontalOptions="Center" FontAttributes="Bold" />
+                <Button Text="Reset Lock with pass" ></Button>
+            </StackLayout>
+
+            <StackLayout BackgroundColor="IndianRed" Margin="5">
+                <Label Text="Locked actions" 
+                   HorizontalOptions="Center" FontAttributes="Bold" />
+                <Button Text="Stop Filtering" ></Button>
+                <Button Text="Set password" ></Button>
+                <Button Text="Lock" ></Button>
+                <Button Text="Clear wifis" ></Button>
+                <Button Text="Ignore Wifis" ></Button>
+            </StackLayout>
+        </StackLayout>
+        
+        <!-- Expose \ Import Files Wifi + Policies  (except pass file) -->
+    </ScrollView>
 
 </ContentPage>
