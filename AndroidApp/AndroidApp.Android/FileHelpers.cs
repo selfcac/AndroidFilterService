@@ -38,5 +38,23 @@ namespace AndroidApp.Droid
             // No error handling : Critical log path
             File.AppendAllLines(getInternalAppFilePath(ctx, relativePath), new[] { line });
         }
+
+        public static string ReadAssetAsString(Context ctx, string tag, string asset_name)
+        {
+            string result = "";
+            try
+            {
+                using (Stream s = ctx.Assets.Open(asset_name))
+                {
+                    StreamReader reader = new StreamReader(s);
+                    result = reader.ReadToEnd();
+                }
+            }
+            catch (Exception ex)
+            {
+                AndroidBridge.e(tag, ex);
+            }
+            return result;
+        }
     }
 }

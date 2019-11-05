@@ -107,6 +107,11 @@ namespace AndroidApp.Droid
             {
                 AndroidUtils.ToastIt(global_ctx, msg);
             });
+
+            AndroidBridge._readAsset = new Func<string, string, string>((tag, asset_name) =>
+            {
+                return FileHelpers.ReadAssetAsString(global_ctx, tag, asset_name);
+            });
         }
     } 
 }
