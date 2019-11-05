@@ -18,14 +18,22 @@ namespace AndroidApp.Droid
             TabLayoutResource = Resource.Layout.Tabbar;
             ToolbarResource = Resource.Layout.Toolbar;
 
+            RunUnderPermission(new[] { PermissionConstants.WRITE_EXTERNAL_STORAGE }, null, ()=>
+            {
+                AndroidUtils.ToastIt(this, "Permission Denied, Exiting.");
+                Finish();
+            });
+
             base.OnCreate(savedInstanceState);
             global::Xamarin.Forms.Forms.Init(this, savedInstanceState);
             LoadApplication(new App());
         }
 
-        JavaDictionary<int, Action> _requestedActionUnderPermissions = new JavaDictionary<int, Action>();
-        public void RunUnderPermission(Action callback, string[] permissions)
+        Action[] _requestedActionUnderPermissions = null;
+        public void RunUnderPermission(string[] permissions, Action callback, Action onFail)
         {
+            // No error handling : Critical log path
+
             bool allAllowed = true;
             foreach (string p in permissions)
             {
@@ -42,21 +50,23 @@ namespace AndroidApp.Droid
             }
             else
             {
-                int reqCode = callback.GetHashCode();
-                _requestedActionUnderPermissions.Add(reqCode, callback);
-                ActivityCompat.RequestPermissions(this, permissions , reqCode);
+                Action[] callbackArray = new Action[] { callback, onFail };
+                _requestedActionUnderPermissions = callbackArray;
+                ActivityCompat.RequestPermissions(this, permissions , 0);
             }
         }
 
         public override void OnRequestPermissionsResult(int requestCode, string[] permissions, [GeneratedEnum] Permission[] grantResults)
         {
-            if (_requestedActionUnderPermissions.ContainsKey(requestCode))
+            // No error handling : Critical log path
+
+            if (_requestedActionUnderPermissions != null)
             {
-                Action callback = _requestedActionUnderPermissions[requestCode];
-                _requestedActionUnderPermissions.Remove(requestCode);
+                Action[] actions = _requestedActionUnderPermissions;
+                _requestedActionUnderPermissions = null;
 
                 bool allAllowed = true;
-                for (Permission p in grantResults)
+                foreach (Permission p in grantResults)
                 {
                     if (p == Permission.Denied)
                     {
@@ -67,11 +77,26 @@ namespace AndroidApp.Droid
 
                 if (allAllowed)
                 {
-                    callback?.Invoke();
+                    actions[0]?.Invoke(); // on sucess callback
+                }
+                else
+                {
+                    actions[1]?.Invoke(); // onFail
                 }
             }
         }
 
+        public void setupAndroidBridge()
+        {
+            AndroidBridge._log_d_from_main = new Action<string, string>((tag, msg) =>
+            {
+                FileHelpers.AppendLinePublic(this, "activity_log.txt", AndroidUtils.logFormat(tag, 'D', msg));
+            });
 
+            AndroidBridge._log_e_from_main = new Action<string, string>((tag, msg) =>
+            {
+                FileHelpers.AppendLinePublic(this, "activity_err.txt", AndroidUtils.logFormat(tag, 'D', msg));
+            });
+        }
     } 
 }

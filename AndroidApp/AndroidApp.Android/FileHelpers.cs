@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Text;
 
@@ -14,6 +15,28 @@ namespace AndroidApp.Droid
 {
     public class FileHelpers
     {
-        
+        public static string getPublicAppFilePath(Context ctx, string relativePath)
+        {
+            // No error handling : Critical log path
+            return Path.Combine(ctx.GetExternalFilesDir(null).AbsolutePath, relativePath);
+        }
+
+        public static string getInternalAppFilePath(Context ctx, string relativePath)
+        {
+            // No error handling : Critical log path
+            return Path.Combine(ctx.FilesDir.AbsolutePath, relativePath);
+        }
+
+        public static void AppendLinePublic(Context ctx, string relativePath, string line)
+        {
+            // No error handling : Critical log path
+            File.AppendAllLines(getPublicAppFilePath(ctx, relativePath), new[] { line });
+        }
+
+        public static void AppendLineInternal(Context ctx, string relativePath, string line)
+        {
+            // No error handling : Critical log path
+            File.AppendAllLines(getInternalAppFilePath(ctx, relativePath), new[] { line });
+        }
     }
 }
