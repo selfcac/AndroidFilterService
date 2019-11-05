@@ -7,6 +7,7 @@ using Android.Views;
 using Android.Widget;
 using Android.OS;
 using Android.Support.V4.App;
+using Android.Content;
 
 namespace AndroidApp.Droid
 {
@@ -23,6 +24,8 @@ namespace AndroidApp.Droid
                 AndroidUtils.ToastIt(this, "Permission Denied, Exiting.");
                 Finish();
             });
+
+            setupAndroidBridge();
 
             base.OnCreate(savedInstanceState);
             global::Xamarin.Forms.Forms.Init(this, savedInstanceState);
@@ -88,14 +91,21 @@ namespace AndroidApp.Droid
 
         public void setupAndroidBridge()
         {
-            AndroidBridge._log_d_from_main = new Action<string, string>((tag, msg) =>
+            Context global_ctx = Application.Context;
+
+            AndroidBridge._log_d = new Action<string, string>((tag, msg) =>
             {
-                FileHelpers.AppendLinePublic(this, "activity_log.txt", AndroidUtils.logFormat(tag, 'D', msg));
+                FileHelpers.AppendLinePublic(global_ctx, "log_debug.txt", AndroidUtils.logFormat(tag, 'D', msg));
             });
 
-            AndroidBridge._log_e_from_main = new Action<string, string>((tag, msg) =>
+            AndroidBridge._log_e = new Action<string, string>((tag, msg) =>
             {
-                FileHelpers.AppendLinePublic(this, "activity_err.txt", AndroidUtils.logFormat(tag, 'D', msg));
+                FileHelpers.AppendLinePublic(global_ctx, "log_error.txt", AndroidUtils.logFormat(tag, 'E', msg));
+            });
+
+            AndroidBridge._toast = new Action<string>(( msg) =>
+            {
+                AndroidUtils.ToastIt(global_ctx, msg);
             });
         }
     } 
