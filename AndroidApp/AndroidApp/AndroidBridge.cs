@@ -35,5 +35,16 @@ namespace AndroidApp
         {
             return _readAsset?.Invoke(TAG, assetName) ?? "";
         }
+
+        // TODO: show debug info (like save path, what files exists internelly etc...)
+        public static Func<string> _envDebugInfo = null;
+        public static string getEnvDebugInfo()
+        {
+            return _envDebugInfo?.Invoke() ?? "";
+        }
+
+        // TODO: Make Service as a long task wrapper for any Action<> 
+        //          and pass task that start a server and filter stuff.
+        //          all core libs shouldn't be in "App.Android" but in cross-platform "App" project
     }
 }
