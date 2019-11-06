@@ -27,17 +27,7 @@ namespace AndroidApp.Droid
             return Path.Combine(ctx.FilesDir.AbsolutePath, relativePath);
         }
 
-        public static void AppendLinePublic(Context ctx, string relativePath, string line)
-        {
-            // No error handling : Critical log path
-            File.AppendAllLines(getPublicAppFilePath(ctx, relativePath), new[] { line });
-        }
-
-        public static void AppendLineInternal(Context ctx, string relativePath, string line)
-        {
-            // No error handling : Critical log path
-            File.AppendAllLines(getInternalAppFilePath(ctx, relativePath), new[] { line });
-        }
+       
 
         public static string ReadAssetAsString(Context ctx, string tag, string asset_name)
         {

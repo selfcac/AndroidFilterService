@@ -8,6 +8,7 @@ using Android.Widget;
 using Android.OS;
 using Android.Support.V4.App;
 using Android.Content;
+using Android.Util;
 
 namespace AndroidApp.Droid
 {
@@ -95,12 +96,12 @@ namespace AndroidApp.Droid
 
             AndroidBridge._log_d = new Action<string, string>((tag, msg) =>
             {
-                FileHelpers.AppendLinePublic(global_ctx, "log_debug.txt", AndroidUtils.logFormat(tag, 'D', msg));
+                Log.Debug(tag, msg);
             });
 
             AndroidBridge._log_e = new Action<string, string>((tag, msg) =>
             {
-                FileHelpers.AppendLinePublic(global_ctx, "log_error.txt", AndroidUtils.logFormat(tag, 'E', msg));
+                Log.Error(tag, msg);
             });
 
             AndroidBridge._toast = new Action<string>(( msg) =>
@@ -112,6 +113,8 @@ namespace AndroidApp.Droid
             {
                 return FileHelpers.ReadAssetAsString(global_ctx, tag, asset_name);
             });
+
+            //FileHelpers.AppendLinePublic(global_ctx, "log_debug.txt", AndroidUtils.logFormat(tag, 'D', msg));
         }
     } 
 }

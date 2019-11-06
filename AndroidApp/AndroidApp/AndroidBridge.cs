@@ -38,7 +38,7 @@ namespace AndroidApp
 
         // TODO: show debug info (like save path, what files exists internelly etc...)
         public static Func<string> _envDebugInfo = null;
-        public static string getEnvDebugInfo()
+        public static string GetEnvDebugInfo()
         {
             return _envDebugInfo?.Invoke() ?? "";
         }
@@ -46,5 +46,12 @@ namespace AndroidApp
         // TODO: Make Service as a long task wrapper for any Action<> 
         //          and pass task that start a server and filter stuff.
         //          all core libs shouldn't be in "App.Android" but in cross-platform "App" project
+
+
+        public static Func<string, bool, string> _get_absolute_path = null;
+        public static string GetAbsulotePath(string relative, bool isPublic)
+        {
+            return _get_absolute_path?.Invoke(relative, isPublic);
+        }
     }
 }
