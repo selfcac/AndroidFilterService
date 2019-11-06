@@ -17,7 +17,6 @@ namespace AndroidApp.Droid
     {
         public static string getPublicAppFilePath(Context ctx, string relativePath)
         {
-            // No error handling : Critical log path
             return Path.Combine(ctx.GetExternalFilesDir(null).AbsolutePath, relativePath);
         }
 
@@ -26,8 +25,6 @@ namespace AndroidApp.Droid
             // No error handling : Critical log path
             return Path.Combine(ctx.FilesDir.AbsolutePath, relativePath);
         }
-
-       
 
         public static string ReadAssetAsString(Context ctx, string tag, string asset_name)
         {

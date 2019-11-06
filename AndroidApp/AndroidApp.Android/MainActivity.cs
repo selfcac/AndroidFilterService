@@ -93,6 +93,7 @@ namespace AndroidApp.Droid
         public void setupAndroidBridge()
         {
             Context global_ctx = Application.Context;
+            
 
             AndroidBridge._log_d = new Action<string, string>((tag, msg) =>
             {
@@ -106,15 +107,51 @@ namespace AndroidApp.Droid
 
             AndroidBridge._toast = new Action<string>(( msg) =>
             {
-                AndroidUtils.ToastIt(global_ctx, msg);
+                try
+                {
+                    AndroidUtils.ToastIt(global_ctx, msg);
+                }
+                catch (Exception ex)
+                {
+                    Log.Error(AndroidBridge.TAG, ex.ToString());
+                }
             });
 
             AndroidBridge._readAsset = new Func<string, string, string>((tag, asset_name) =>
             {
-                return FileHelpers.ReadAssetAsString(global_ctx, tag, asset_name);
+                string result = "";
+                try
+                {
+                    result = FileHelpers.ReadAssetAsString(global_ctx, tag, asset_name);
+                }
+                    catch (Exception ex)
+                {
+                    Log.Error(AndroidBridge.TAG, ex.ToString());
+                }
+                return result;
             });
 
-            //FileHelpers.AppendLinePublic(global_ctx, "log_debug.txt", AndroidUtils.logFormat(tag, 'D', msg));
+            AndroidBridge._get_absolute_path = new Func<string, bool, string>((relative, isPulic) =>
+            {
+                string result = "";
+                try
+                {
+                    if( isPulic )
+                    {
+                        result = FileHelpers.getPublicAppFilePath(global_ctx, relative);
+                    }
+                    else
+                    {
+                        result = FileHelpers.getInternalAppFilePath(global_ctx, relative);
+                    }
+                }
+                catch (Exception ex)
+                {
+                    Log.Error(AndroidBridge.TAG, ex.ToString());
+                }
+                return result;
+            });
+
         }
     } 
 }

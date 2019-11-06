@@ -6,6 +6,8 @@ namespace AndroidApp
 {
     public static class AndroidBridge
     {
+        public const string TAG = "AndroidBridge";
+
         // No error handling : Critical log path
         public static Action<string, string> _log_d = null;
         public static void d(string TAG, string message)
