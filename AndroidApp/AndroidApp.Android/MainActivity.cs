@@ -93,7 +93,6 @@ namespace AndroidApp.Droid
         public void setupAndroidBridge()
         {
             Context global_ctx = Application.Context;
-            
 
             AndroidBridge._log_d = new Action<string, string>((tag, msg) =>
             {
@@ -150,6 +149,13 @@ namespace AndroidApp.Droid
                     Log.Error(AndroidBridge.TAG, ex.ToString());
                 }
                 return result;
+            });
+
+            WifiScan.SetupWifiScan(global_ctx);
+
+            AndroidBridge._start_wifi_scan = new Action(() =>
+            {
+                WifiScan.RequestScan();
             });
 
         }

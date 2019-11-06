@@ -38,22 +38,17 @@ namespace AndroidApp
             return _readAsset?.Invoke(TAG, assetName) ?? "";
         }
 
-        // TODO: show debug info (like save path, what files exists internelly etc...)
-        public static Func<string> _envDebugInfo = null;
-        public static string GetEnvDebugInfo()
-        {
-            return _envDebugInfo?.Invoke() ?? "";
-        }
-
-        // TODO: Make Service as a long task wrapper for any Action<> 
-        //          and pass task that start a server and filter stuff.
-        //          all core libs shouldn't be in "App.Android" but in cross-platform "App" project
-
-
         public static Func<string, bool, string> _get_absolute_path = null;
         public static string GetAbsulotePath(string relative, bool isPublic)
         {
             return _get_absolute_path?.Invoke(relative, isPublic);
         }
+
+        public static Action _start_wifi_scan = null;
+        public static void StartWifiScanning()
+        {
+            _start_wifi_scan?.Invoke();
+        }
+        public static Action<List<String>,bool> WifiScanningCallbackSucess = null;
     }
 }
