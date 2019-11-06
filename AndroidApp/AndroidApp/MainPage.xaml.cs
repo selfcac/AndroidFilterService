@@ -17,7 +17,7 @@ namespace AndroidApp
                 AndroidBridge.ToastIt(string.Format("Sucess? {0} Got {1}, First: {2}",
                     sucess,
                     list?.Count ?? -1,
-                    list?[0] ?? "X"
+                    (list != null && list.Count > 0) ? list[0] : "X"
                     ));
             });
         }
