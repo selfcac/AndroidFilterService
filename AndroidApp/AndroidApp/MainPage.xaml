@@ -18,6 +18,7 @@
 
                 <Button Text="Start Filtering" ></Button>
                 <Button Text="Export Wifi List" ></Button>
+                <Button Text="Start Wifi Scan"  x:Name="btnScan" Clicked="BtnScan_Clicked"></Button>
             </StackLayout>
 
             <StackLayout BackgroundColor="LightYellow" Margin="5">

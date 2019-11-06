@@ -12,6 +12,19 @@ namespace AndroidApp
         public MainPage()
         {
             InitializeComponent();
+            AndroidBridge.WifiScanningCallbackSucess = new Action<List<string>, bool>((list, sucess) =>
+            {
+                AndroidBridge.ToastIt(string.Format("Sucess? {0} Got {1}, First: {2}",
+                    sucess,
+                    list?.Count ?? -1,
+                    list?[0] ?? "X"
+                    ));
+            });
+        }
+
+        private void BtnScan_Clicked(object sender, EventArgs e)
+        {
+            AndroidBridge.StartWifiScanning();
         }
     }
 }
