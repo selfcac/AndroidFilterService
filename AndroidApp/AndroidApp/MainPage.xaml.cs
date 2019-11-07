@@ -9,18 +9,20 @@ namespace AndroidApp
 {
     public partial class MainPage : ContentPage
     {
+        const string TAG = "MainXaml";
+
         public MainPage()
         {
             InitializeComponent();
             AndroidBridge.WifiScanningCallbackSucess = new Action<List<string>, bool>((list, sucess) =>
             {
-                // TODO: Write to file everytime we recieve wifis.
-
-                AndroidBridge.ToastIt(string.Format("Sucess? {0} Got {1}, First: {2}",
+                string wifiInfo =string.Format("Sucess? {0} Got {1}, First: {2}",
                     sucess,
                     list?.Count ?? -1,
-                    (list != null && list.Count > 0) ? list[0] : "X"
-                    ));
+                    (list != null && list.Count > 0) ? list[0] : "<none>"
+                    );
+                Logger.d(TAG, wifiInfo);
+
             });
         }
 

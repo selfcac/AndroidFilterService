@@ -18,14 +18,17 @@ namespace AndroidApp
             return string.Format("[{0}] {1}/{2} {3}", DateTime.Now, Level, myTag, message);
         }
 
-        private static void logToPublicFile(string filename, string TAG, char level, string message)
+        private static void logToPublicFile(string filename, string TAG, char level, string message, bool writeToFile )
         {
             try
             {
-                File.WriteAllLines(
+                if (writeToFile)
+                {
+                    File.WriteAllLines(
                         AndroidBridge.GetAbsulotePath(filename, true),
                         new[] { lineFormat(TAG, level, message) }
                         );
+                }
 
                 switch (level)
                 {
@@ -44,16 +47,16 @@ namespace AndroidApp
             }
         }
 
-        public static void d(string TAG, string message)
+        public static void d(string TAG, string message,bool writeToFile = true)
         {
             char myChar = debug_char;
-            logToPublicFile(string.Format(logFormat, myChar),TAG, myChar, message);
+            logToPublicFile(string.Format(logFormat, myChar),TAG, myChar, message, writeToFile);
         }
 
-        public static void e(string TAG, string message)
+        public static void e(string TAG, string message, bool writeToFile = true)
         {
             char myChar = error_char;
-            logToPublicFile(string.Format(logFormat, myChar), TAG, myChar, message);
+            logToPublicFile(string.Format(logFormat, myChar), TAG, myChar, message, writeToFile);
         }
 
         public static void e(string TAG, Exception ex)
