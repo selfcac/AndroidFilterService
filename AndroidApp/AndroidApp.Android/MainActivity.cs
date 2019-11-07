@@ -151,8 +151,6 @@ namespace AndroidApp.Droid
                 return result;
             });
 
-            WifiScan.SetupWifiScan(global_ctx);
-
             AndroidBridge._start_wifi_scan = new Action(() =>
             {
                 WifiScan.RequestScan();

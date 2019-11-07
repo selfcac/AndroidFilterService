@@ -15,24 +15,18 @@ namespace AndroidApp.Droid
 {
     class WifiScan
     {
-        private static WifiManager wifi;
+        private static WifiManager myWifiManager = (WifiManager)ctx.GetSystemService(Context.WifiService);;
         private static WifiReceiver wifiReceiver = new WifiReceiver();
-
-        public static void SetupWifiScan(Context ctx)
-        {
-            // Get a handle to the Wifi
-            wifi = (WifiManager)ctx.GetSystemService(Context.WifiService);
-
-            // register the Broadcast receiver to get the list of Wifi Networks
-            ctx.RegisterReceiver(wifiReceiver, new IntentFilter(WifiManager.ScanResultsAvailableAction));
-        }
 
         public static void RequestScan()
         {
             try
             {
+                // register the Broadcast receiver to get the list of Wifi Networks
+                ctx.RegisterReceiver(wifiReceiver, new IntentFilter(WifiManager.ScanResultsAvailableAction));
+
                 // Requirements here: https://developer.android.com/guide/topics/connectivity/wifi-scan
-                wifi.StartScan();
+                myWifiManager.StartScan();
             }
             catch (System.Exception ex)
             {
@@ -52,8 +46,12 @@ namespace AndroidApp.Droid
 
             public override void OnReceive(Context context, Intent intent)
             {
-                IList<ScanResult> scanwifinetworks = wifi.ScanResults;
+                IList<ScanResult> scanwifinetworks = myWifiManager.ScanResults;
                 List<string> allWifis = new List<string>();
+
+                //https://stackoverflow.com/questions/4499915/how-to-stop-wifi-scan-on-android
+                InvokeAbortBroadcast();
+                context.UnregisterReceiver(this);
 
                 if (scanwifinetworks.Count > 0)
                 {
@@ -65,8 +63,7 @@ namespace AndroidApp.Droid
                 }
                 AndroidBridge.WifiScanningCallbackSucess?.Invoke(allWifis, true);
 
-                //https://stackoverflow.com/questions/4499915/how-to-stop-wifi-scan-on-android
-                InvokeAbortBroadcast(); 
+                
             }
         }
     }

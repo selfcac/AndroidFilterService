@@ -14,6 +14,8 @@ namespace AndroidApp
             InitializeComponent();
             AndroidBridge.WifiScanningCallbackSucess = new Action<List<string>, bool>((list, sucess) =>
             {
+                // TODO: Write to file everytime we recieve wifis.
+
                 AndroidBridge.ToastIt(string.Format("Sucess? {0} Got {1}, First: {2}",
                     sucess,
                     list?.Count ?? -1,
