@@ -20,7 +20,6 @@ namespace AndroidApp.Droid
 
         public static void SetupWifiScan(Context ctx)
         {
- 
             // Get a handle to the Wifi
             wifi = (WifiManager)ctx.GetSystemService(Context.WifiService);
 
@@ -65,6 +64,9 @@ namespace AndroidApp.Droid
 
                 }
                 AndroidBridge.WifiScanningCallbackSucess?.Invoke(allWifis, true);
+
+                //https://stackoverflow.com/questions/4499915/how-to-stop-wifi-scan-on-android
+                InvokeAbortBroadcast(); 
             }
         }
     }
