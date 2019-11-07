@@ -24,7 +24,7 @@ namespace AndroidApp
             {
                 if (writeToFile)
                 {
-                    File.WriteAllLines(
+                    File.AppendAllLines(
                         AndroidBridge.GetAbsulotePath(filename, true),
                         new[] { lineFormat(TAG, level, message) }
                         );
