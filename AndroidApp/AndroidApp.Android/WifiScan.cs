@@ -15,10 +15,15 @@ namespace AndroidApp.Droid
 {
     class WifiScan
     {
-        private static WifiManager myWifiManager = (WifiManager)ctx.GetSystemService(Context.WifiService);;
+        private static WifiManager myWifiManager =  null;
         private static WifiReceiver wifiReceiver = new WifiReceiver();
 
-        public static void RequestScan()
+        public static void InitWifiScan(Context ctx)
+        {
+            myWifiManager = (WifiManager)ctx.GetSystemService(Context.WifiService);
+        }
+
+        public static void RequestScan(Context ctx)
         {
             try
             {
@@ -26,7 +31,7 @@ namespace AndroidApp.Droid
                 ctx.RegisterReceiver(wifiReceiver, new IntentFilter(WifiManager.ScanResultsAvailableAction));
 
                 // Requirements here: https://developer.android.com/guide/topics/connectivity/wifi-scan
-                myWifiManager.StartScan();
+                myWifiManager?.StartScan();
             }
             catch (System.Exception ex)
             {
