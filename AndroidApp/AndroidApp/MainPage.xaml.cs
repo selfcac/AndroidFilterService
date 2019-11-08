@@ -14,9 +14,15 @@ namespace AndroidApp
         public MainPage()
         {
             InitializeComponent();
+            SetupAndroidBridge();
+
+        }
+
+        private static void SetupAndroidBridge()
+        {
             AndroidBridge.WifiScanningCallbackSucess = new Action<List<string>, bool>((list, sucess) =>
             {
-                string wifiInfo =string.Format("Sucess? {0} Got {1}, First: {2}",
+                string wifiInfo = string.Format("Sucess? {0} Got {1}, First: {2}",
                     sucess,
                     list?.Count ?? -1,
                     (list != null && list.Count > 0) ? list[0] : "<none>"
@@ -24,11 +30,31 @@ namespace AndroidApp
                 Logger.d(TAG, wifiInfo);
 
             });
+
+            AndroidBridge.OnForgroundServiceStart = new Action(() => { AndroidBridge.ToastIt("Service Start"); });
+            AndroidBridge.OnForgroundServiceStop = new Action(() => { AndroidBridge.ToastIt("Service Stop"); });
+            AndroidBridge.OnServiceInfoRequest = new Func<string>(() => "Some info!");
         }
 
         private void BtnScan_Clicked(object sender, EventArgs e)
         {
             AndroidBridge.StartWifiScanning();
+        }
+
+        private void BtnRestartService_Clicked(object sender, EventArgs e)
+        {
+            AndroidBridge.StopForgroundService();
+            AndroidBridge.StartForgroundService();
+        }
+
+        private void BtnStopService_Clicked(object sender, EventArgs e)
+        {
+            AndroidBridge.StopForgroundService();
+        }
+
+        private void BtnStartService_Clicked(object sender, EventArgs e)
+        {
+            AndroidBridge.StartForgroundService();
         }
     }
 }

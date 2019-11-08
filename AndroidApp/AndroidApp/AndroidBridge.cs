@@ -50,5 +50,22 @@ namespace AndroidApp
             _start_wifi_scan?.Invoke();
         }
         public static Action<List<String>,bool> WifiScanningCallbackSucess = null;
+
+        public static Action OnForgroundServiceStart = null;
+        public static Action OnForgroundServiceStop = null;
+
+        public static Func<string> OnServiceInfoRequest = null;
+
+        public static Action _start_service = null;
+        public static void StartForgroundService()
+        {
+            _start_service?.Invoke();
+        }
+
+        public static Action _stop_service = null;
+        public static void StopForgroundService()
+        {
+            _stop_service?.Invoke();
+        }
     }
 }

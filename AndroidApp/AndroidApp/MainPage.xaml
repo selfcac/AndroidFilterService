@@ -12,7 +12,8 @@
                 
                 <Button Text="Is unlocked?" ></Button>
                 <StackLayout Orientation="Horizontal">
-                    <Button Text="Serivce Restart" WidthRequest="150" ></Button>
+                    <Button Text="Serivce Start" WidthRequest="150" x:Name="btnStartService" Clicked="BtnStartService_Clicked"></Button>
+                    <Button Text="Restart" x:Name="btnRestartService" Clicked="BtnRestartService_Clicked"></Button>
                     <Button Text="Test" ></Button>
                 </StackLayout>
 
@@ -33,7 +34,7 @@
                 <Label Text="Locked actions" 
                    HorizontalOptions="Center" FontAttributes="Bold" />
                 
-                <Button Text="Stop Service" ></Button>
+                <Button Text="Stop Service" x:Name="btnStopService" Clicked="BtnStopService_Clicked" ></Button>
                 <Button Text="Stop Filtering" ></Button>
                 <Button Text="Set password" ></Button>
                 <Button Text="Lock" ></Button>

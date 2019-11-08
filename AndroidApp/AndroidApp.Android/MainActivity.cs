@@ -158,6 +158,16 @@ namespace AndroidApp.Droid
                 WifiScan.RequestScan(global_ctx);
             });
 
+            AndroidBridge._start_service = new Action(() =>
+            {
+                MyForegroundService.StartForegroundServiceCompat<MyForegroundService>(global_ctx, MyForegroundService.ACTION_START_SERVICE);
+            });
+
+            AndroidBridge._stop_service = new Action(() =>
+            {
+                MyForegroundService.StartForegroundServiceCompat<MyForegroundService>(global_ctx, MyForegroundService.ACTION_STOP_SERVICE);
+            });
+
         }
     } 
 }
