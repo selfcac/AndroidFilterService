@@ -29,6 +29,16 @@ namespace AndroidApp
                     );
                 AndroidBridge.d(TAG, wifiInfo);
 
+                // TODO:
+                /*
+                 * Periodic job to check wifi zone (start+stop while service live)
+                 * Test wifi zones
+                 * Web server + view why page ( + check api)
+                 * URL + time import export policies
+                 * Lock\Unlocked
+                 * System info (wifi zone, lock time, service state, etc...)
+                */
+
             });
 
             AndroidBridge.OnForgroundServiceStart = new Action(() => { AndroidBridge.ToastIt("Service Start"); });
