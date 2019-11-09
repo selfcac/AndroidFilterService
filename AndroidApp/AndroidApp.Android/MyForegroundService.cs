@@ -55,13 +55,13 @@ namespace AndroidApp.Droid
             }
             catch (Exception ex)
             {
-                AndroidBridge.e(TAG, ex.ToString());
+                MyLogger.e(TAG, ex.ToString());
             }
         }
 
         public override IBinder OnBind(Intent intent)
         {
-            AndroidBridge.d(TAG, "OnBind");
+            MyLogger.d(TAG, "OnBind");
             return null;
         }
 
@@ -86,7 +86,7 @@ namespace AndroidApp.Droid
             }
             catch (Exception ex)
             {
-                AndroidBridge.e(TAG, ex);   
+                MyLogger.e(TAG, ex);   
             }
         }
 
@@ -136,7 +136,7 @@ namespace AndroidApp.Droid
             }
             catch (Exception ex)
             {
-                AndroidBridge.e(TAG, ex.ToString());
+                MyLogger.e(TAG, ex.ToString());
             }
         }
 
@@ -174,7 +174,7 @@ namespace AndroidApp.Droid
             }
             catch (Exception ex)
             {
-                AndroidBridge.e(TAG, ex.ToString());
+                MyLogger.e(TAG, ex.ToString());
             }
 
             return StartCommandResult.Sticky;
@@ -193,7 +193,7 @@ namespace AndroidApp.Droid
             }
             catch (Exception ex)
             {
-                AndroidBridge.e(TAG, ex.ToString());
+                MyLogger.e(TAG, ex.ToString());
             }
         }
 
