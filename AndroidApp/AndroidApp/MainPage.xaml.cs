@@ -27,7 +27,7 @@ namespace AndroidApp
                     list?.Count ?? -1,
                     (list != null && list.Count > 0) ? list[0] : "<none>"
                     );
-                Logger.d(TAG, wifiInfo);
+                AndroidBridge.d(TAG, wifiInfo);
 
             });
 

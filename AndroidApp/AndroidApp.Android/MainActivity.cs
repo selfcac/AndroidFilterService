@@ -33,6 +33,8 @@ namespace AndroidApp.Droid
             LoadApplication(new App());
         }
 
+        #region CriticalPermissionRequestAtInit
+
         Action[] _requestedActionUnderPermissions = null;
         public void RunUnderPermission(string[] permissions, Action callback, Action onFail)
         {
@@ -56,10 +58,9 @@ namespace AndroidApp.Droid
             {
                 Action[] callbackArray = new Action[] { callback, onFail };
                 _requestedActionUnderPermissions = callbackArray;
-                ActivityCompat.RequestPermissions(this, permissions , 0);
+                ActivityCompat.RequestPermissions(this, permissions, 0);
             }
         }
-
         public override void OnRequestPermissionsResult(int requestCode, string[] permissions, [GeneratedEnum] Permission[] grantResults)
         {
             // No error handling : Critical log path
@@ -90,18 +91,20 @@ namespace AndroidApp.Droid
             }
         }
 
+        #endregion
+
         public void setupAndroidBridge()
         {
             Context global_ctx = Application.Context;
 
             AndroidBridge._log_d = new Action<string, string>((tag, msg) =>
             {
-                Log.Debug(tag, msg);
+                MyLogger.d(tag, msg);
             });
 
             AndroidBridge._log_e = new Action<string, string>((tag, msg) =>
             {
-                Log.Error(tag, msg);
+                MyLogger.e(tag, msg);
             });
 
             AndroidBridge._toast = new Action<string>(( msg) =>
