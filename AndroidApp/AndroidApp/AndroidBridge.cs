@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Text;
 
 namespace AndroidApp
 {
@@ -49,7 +48,9 @@ namespace AndroidApp
         {
             _start_wifi_scan?.Invoke();
         }
-        public static Action<List<String>,bool> WifiScanningCallbackSucess = null;
+        public static Action<List<String>,Exception> WifiScanningCallback = null;
+
+       
 
         public static Action OnForgroundServiceStart = null;
         public static Action OnForgroundServiceStop = null;

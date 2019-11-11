@@ -20,18 +20,29 @@ namespace AndroidApp
 
         private static void SetupAndroidBridge()
         {
-            AndroidBridge.WifiScanningCallbackSucess = new Action<List<string>, bool>((list, sucess) =>
+            AndroidBridge.WifiScanningCallback = new Action<List<string>, Exception>((list, ex) =>
             {
-                string wifiInfo = string.Format("Sucess? {0} Got {1}, First: {2}",
-                    sucess,
-                    list?.Count ?? -1,
-                    (list != null && list.Count > 0) ? list[0] : "<none>"
+                if (ex == null)
+                {
+                    string wifiInfo = string.Format(
+                        "Sucess? {0} Got {1}, First: {2}",
+                        (ex == null),
+                        list?.Count ?? -1,
+                        (list != null && list.Count > 0) ? list[0] : "<none>"
                     );
-                AndroidBridge.d(TAG, wifiInfo);
+                    AndroidBridge.d(TAG, wifiInfo);
+                    AndroidBridge.ToastIt(wifiInfo);
+                }
+                else
+                {
+                    AndroidBridge.e(TAG, ex);
+                    AndroidBridge.ToastIt("Wifi failed: '" + ex.Message + "'");
+                }
 
                 // TODO:
                 /*
                  * Periodic job to check wifi zone (start+stop while service live)
+                 *      * Check if theter
                  * Test wifi zones
                  * Web server + view why page ( + check api)
                  * URL + time import export policies

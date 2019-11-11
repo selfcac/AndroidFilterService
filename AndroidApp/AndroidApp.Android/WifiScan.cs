@@ -11,13 +11,13 @@ using Android.Runtime;
 using Android.Views;
 using Android.Widget;
 
+
 namespace AndroidApp.Droid
 {
     class WifiScan
     {
         const string TAG = "WIFI_SCAN";
         private static WifiManager myWifiManager =  null;
-        private static WifiReceiver wifiReceiver = new WifiReceiver();
 
         public static void InitWifiScan(Context ctx)
         {
@@ -36,23 +36,30 @@ namespace AndroidApp.Droid
             try
             {
                 // register the Broadcast receiver to get the list of Wifi Networks
-                ctx.RegisterReceiver(wifiReceiver, new IntentFilter(WifiManager.ScanResultsAvailableAction));
+                ctx.RegisterReceiver(new WifiReceiver(), new IntentFilter(WifiManager.ScanResultsAvailableAction));
 
                 // Requirements here: https://developer.android.com/guide/topics/connectivity/wifi-scan
                 if (!myWifiManager?.StartScan() ?? false)
                 {
-                    AndroidBridge.WifiScanningCallbackSucess?.Invoke(null, false);
+                    AndroidBridge.WifiScanningCallback?.Invoke(null, new Exception("Starting scan failed quietly"));
                 }
             }
             catch (Exception ex)
             {
                 MyLogger.e(TAG, ex.ToString());
-                AndroidBridge.WifiScanningCallbackSucess?.Invoke(null, false);
+                AndroidBridge.WifiScanningCallback?.Invoke(null, ex);
             }
         }
 
+
         class WifiReceiver : BroadcastReceiver
         {
+            DateTime start;
+            public WifiReceiver ()
+            {
+                start = DateTime.Now;
+            }
+
             string wifiDesc(ScanResult wifi)
             {
                 string name = wifi.Ssid;
@@ -67,13 +74,14 @@ namespace AndroidApp.Droid
                     IList<ScanResult> scanwifinetworks = myWifiManager.ScanResults;
                     List<string> allWifis = new List<string>();
 
+                    if (DateTime.Now - this.start > TimeSpan.FromSeconds(20))
+                    {
+                        AndroidUtils.ToastIt(context, "Long wifi scan!!!");
+                    }
+
                     // Ignore if fail, we get many in between scans
                     if (intent.GetBooleanExtra(WifiManager.ExtraResultsUpdated, false))
                     {
-
-                        //https://stackoverflow.com/questions/4499915/how-to-stop-wifi-scan-on-android
-
-
                         if (scanwifinetworks.Count > 0)
                         {
                             foreach (ScanResult wifinetwork in scanwifinetworks)
@@ -82,9 +90,7 @@ namespace AndroidApp.Droid
                             }
 
                         }
-                        AndroidBridge.WifiScanningCallbackSucess?.Invoke(allWifis, true);
-
-                        
+                        AndroidBridge.WifiScanningCallback?.Invoke(allWifis, null);    
                     }
                 }
                 catch (Exception ex)
@@ -92,10 +98,11 @@ namespace AndroidApp.Droid
                     MyLogger.e(TAG, ex);
                 }
 
-                // Try to stop scan in a different "try\e"
 
+                // Try to stop scan in a different "try\e"
                 try
                 {
+                    //https://stackoverflow.com/questions/4499915/how-to-stop-wifi-scan-on-android
                     context.UnregisterReceiver(this);
                     InvokeAbortBroadcast();
                 }

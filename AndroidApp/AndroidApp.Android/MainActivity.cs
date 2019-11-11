@@ -156,6 +156,8 @@ namespace AndroidApp.Droid
 
             WifiScan.InitWifiScan(global_ctx);
 
+           
+
             AndroidBridge._start_wifi_scan = new Action(() =>
             {
                 WifiScan.RequestScan(global_ctx);
