@@ -19,7 +19,8 @@ namespace AndroidApp.Droid
     {
         #region Constants
 
-        public const string TAG = "MyLogger";
+
+        static readonly string TAG = typeof(MyLogger).Name.ToString();
         delegate int LogFunction(string tag, string messgae);
         enum LogLevels
         {

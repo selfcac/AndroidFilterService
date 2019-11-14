@@ -16,7 +16,8 @@ namespace AndroidApp.Droid
 {
     class WifiScan
     {
-        const string TAG = "WIFI_SCAN";
+
+        static readonly string TAG = typeof(WifiScan).Name.ToString();
         private static WifiManager myWifiManager =  null;
 
         public static void InitWifiScan(Context ctx)

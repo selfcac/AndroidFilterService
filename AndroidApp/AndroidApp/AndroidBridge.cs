@@ -5,7 +5,8 @@ namespace AndroidApp
 {
     public static class AndroidBridge
     {
-        public const string TAG = "AndroidBridge";
+
+        static readonly string TAG = typeof(AndroidBridge).Name.ToString();
 
         // No error handling : Critical log path
         public static Action<string, string> _log_d = null;

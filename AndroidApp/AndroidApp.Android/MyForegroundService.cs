@@ -17,7 +17,8 @@ namespace AndroidApp.Droid
     [Service(Exported = false, Name = "com.yoniwas.selfcac.MyForegroundService")]
     class MyForegroundService : Service
     {
-        const string TAG = "ForegroundService+Notification";
+
+        static readonly string TAG = typeof(MyForegroundService).Name.ToString();
 
         public const string MAIN_NOTIFICATION_CHANNEL_ID = "com.yoniwas.selfcac.MyForegroundService.NotificaitionChannel";
 

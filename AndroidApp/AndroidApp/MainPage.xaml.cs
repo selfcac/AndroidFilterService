@@ -9,7 +9,8 @@ namespace AndroidApp
 {
     public partial class MainPage : ContentPage
     {
-        const string TAG = "MainXaml";
+
+        static readonly string TAG = typeof(MainPage).Name.ToString();
 
         public MainPage()
         {
