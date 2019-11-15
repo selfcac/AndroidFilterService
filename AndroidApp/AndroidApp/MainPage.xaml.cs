@@ -83,11 +83,14 @@ namespace AndroidApp
 
         public int scheduleRepeated()
         {
+
             return AndroidBridge.scheduleJob(TimeSpan.FromSeconds(5), TimeSpan.FromSeconds(10), null,
                (finishFunc) => {
                    if (counter < 6)
                    {
-                       counter++; AndroidBridge.ToastItFromBack("Counter: " + counter);
+                       counter++;
+                       AndroidBridge.ToastItFromBack("Counter: " + counter);
+                       AndroidBridge.d(TAG,"Task counter: " + counter);
                        scheduleRepeated();
                    }
                    finishFunc(true);
