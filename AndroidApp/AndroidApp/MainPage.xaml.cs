@@ -80,26 +80,29 @@ namespace AndroidApp
         }
 
         int counter = 0;
+
+        public int scheduleRepeated()
+        {
+            return AndroidBridge.scheduleJob(TimeSpan.FromSeconds(5), TimeSpan.FromSeconds(10), null,
+               (finishFunc) => {
+                   if (counter < 6)
+                   {
+                       counter++; AndroidBridge.ToastItFromBack("Counter: " + counter);
+                       scheduleRepeated();
+                   }
+                   finishFunc(true);
+               },
+               () => counter < 6,
+               null,
+               () => false
+               );
+        }
      
         private void TestTask_Clicked(object sender, EventArgs e)
         {
-            int id = AndroidBridge.scheduleJob(null,null, TimeSpan.FromSeconds(5),
-                (finishFunc) => {
-                    if (counter < 6)
-                    {
-                        counter++; AndroidBridge.ToastItFromBack("Counter: " + counter);
-                    }
-                    else
-                    {
-                        finishFunc(false);
-                    }
-                },
-                () => counter < 6,
-                null,
-                () => false
-                );
+            int id = scheduleRepeated();
 
-            if (id > 0)
+            if (id > -1)
             {
                 AndroidBridge.ToastIt("Task started");
             }

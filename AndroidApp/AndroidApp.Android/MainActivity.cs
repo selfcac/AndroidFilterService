@@ -198,9 +198,15 @@ namespace AndroidApp.Droid
 
             AndroidBridge._schedule_job = new Func<
                 TimeSpan?, TimeSpan?, TimeSpan?,Action<Action<bool>>, Func<bool>, Action, Func<bool>, int>(
-            (latency, maxLatency, interval, onJob, shouldContinue, onJobRequirementAbort, shouldRetryAfterAbort) =>
+            (latency, maxLatency, interval, _onJob, _shouldContinue, _onJobRequirementAbort, _shouldRetryAfterAbort) =>
             {
-                PeriodicTask.JobCallbacks job = new PeriodicTask.JobCallbacks();
+                PeriodicTask.JobCallbacks job = new PeriodicTask.JobCallbacks()
+                {
+                    onJob = _onJob,
+                    shouldContinue = _shouldContinue,
+                    onJobRequirementAbort = _onJobRequirementAbort,
+                    shouldRetryAfterAbort = _shouldRetryAfterAbort
+                };
                 if (PeriodicTask.scheduleJob(global_ctx, job,latency, maxLatency, interval))
                 {
                     return job.JobUniqueID;
