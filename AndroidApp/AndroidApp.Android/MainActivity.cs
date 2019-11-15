@@ -173,6 +173,29 @@ namespace AndroidApp.Droid
                 MyForegroundService.StartForegroundServiceCompat<MyForegroundService>(global_ctx, MyForegroundService.ACTION_STOP_SERVICE);
             });
 
+
+            AndroidBridge._stop_all_jobs = () =>
+            {
+                PeriodicTask.cancelAllJobs(global_ctx);
+            };
+
+            AndroidBridge._stop_job = (int id) =>
+            {
+                PeriodicTask.cancelJobById(global_ctx, id);
+            };
+
+            AndroidBridge._schedule_job = new Func<
+                TimeSpan, TimeSpan, TimeSpan?,Action<Action<bool>>, Func<bool>, Action, Func<bool>, int>(
+            (latency, maxLatency, interval, onJob, shouldContinue, onJobRequirementAbort, shouldRetryAfterAbort) =>
+            {
+                PeriodicTask.JobCallbacks job = new PeriodicTask.JobCallbacks();
+                if (PeriodicTask.scheduleJob(global_ctx, job,latency,maxLatency,interval))
+                {
+                    return job.JobUniqueID;
+                }
+                return -1;
+            }
+            );
         }
     } 
 }

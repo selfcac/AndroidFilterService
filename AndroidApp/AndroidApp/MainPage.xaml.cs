@@ -55,8 +55,6 @@ namespace AndroidApp
 
             AndroidBridge.OnForgroundServiceStart = new Action(() => { AndroidBridge.ToastIt("Service Start"); });
             AndroidBridge.OnForgroundServiceStop = new Action(() => { AndroidBridge.ToastIt("Service Stop"); });
-            AndroidBridge.OnServiceInfoRequest = new Func<string>(() => "Some info!");
-
 
         }
 

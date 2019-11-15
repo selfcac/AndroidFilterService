@@ -1,12 +1,13 @@
 ﻿using System;
 using System.Collections.Generic;
 
+
 namespace AndroidApp
 {
     public static class AndroidBridge
     {
 
-        static readonly string TAG = typeof(AndroidBridge).Name.ToString();
+        public static readonly string TAG = typeof(AndroidBridge).Name.ToString();
 
         // No error handling : Critical log path
         public static Action<string, string> _log_d = null;
@@ -49,14 +50,10 @@ namespace AndroidApp
         {
             _start_wifi_scan?.Invoke();
         }
-        public static Action<List<String>,Exception> WifiScanningCallback = null;
-
-       
+        public static Action<List<String>,Exception> WifiScanningCallback = null;     
 
         public static Action OnForgroundServiceStart = null;
         public static Action OnForgroundServiceStop = null;
-
-        public static Func<string> OnServiceInfoRequest = null;
 
         public static Action _start_service = null;
         public static void StartForgroundService()
@@ -69,5 +66,38 @@ namespace AndroidApp
         {
             _stop_service?.Invoke();
         }
+
+
+        public static Action _stop_all_jobs = null;
+        public static Action<int> _stop_job = null;
+        public static Func<
+            TimeSpan, TimeSpan, TimeSpan?,
+            Action<Action<bool>>,
+            Func<bool>,
+            Action,
+            Func<bool>
+            , int> _schedule_job = null;
+
+        public static void stopAllJobs()
+        {
+            _stop_all_jobs?.Invoke();
+        }
+
+        public static void stopJob(int id)
+        {
+            _stop_job?.Invoke(id);
+        }
+
+        public static int scheduleJob
+            (
+            TimeSpan latency, TimeSpan maxLatency, TimeSpan? interval,
+            Action<Action<bool>> onJob, Func<bool> shouldContinue, Action onJobRequirementAbort, Func<bool> shouldRetryAfterAbort
+            )
+        {
+            return _schedule_job?.Invoke(latency, maxLatency, interval,
+                onJob, shouldContinue, onJobRequirementAbort, shouldRetryAfterAbort)
+                ?? -1;
+        }
+
     }
 }

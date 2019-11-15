@@ -16,7 +16,7 @@ using JobSchedulerType = Android.App.Job.JobScheduler;
 namespace AndroidApp.Droid
 {
     [Service(Exported = true, Permission = "android.permission.BIND_JOB_SERVICE")]
-    class PeriodicTask : JobService
+    public class PeriodicTask : JobService
     {
         static readonly string TAG = typeof(PeriodicTask).Name.ToString();
 
@@ -67,12 +67,17 @@ namespace AndroidApp.Droid
             }
         }
 
-        public static void cancelJobById(Context ctx, JobCallbacks job)
+        public static void cancelJobById(Context ctx, int jobID)
         {
             try
             {
-                var manager = (JobSchedulerType)ctx.GetSystemService(Context.JobSchedulerService);
-                manager.Cancel(job.JobUniqueID);
+               if (allJobs.ContainsKey(jobID))
+                {
+                    JobCallbacks job = allJobs[jobID];
+                    var manager = (JobSchedulerType)ctx.GetSystemService(Context.JobSchedulerService);
+                    manager.Cancel(job.JobUniqueID);
+                    allJobs.Remove(jobID);
+                }
             }
             catch (Exception ex)
             {
