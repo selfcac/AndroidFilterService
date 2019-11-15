@@ -15,12 +15,12 @@ using System.IO;
 
 namespace AndroidApp.Droid
 {
-    class MyLogger
+    class AndroidLevelLogger
     {
         #region Constants
 
 
-        static readonly string TAG = typeof(MyLogger).Name.ToString();
+        static readonly string TAG = typeof(AndroidLevelLogger).Name.ToString();
         delegate int LogFunction(string tag, string messgae);
         enum LogLevels
         {

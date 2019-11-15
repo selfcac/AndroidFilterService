@@ -28,7 +28,7 @@ namespace AndroidApp.Droid
             }
             catch (Exception ex)
             {
-                MyLogger.e(TAG, ex);
+                AndroidLevelLogger.e(TAG, ex);
             }
         }
 
@@ -47,7 +47,7 @@ namespace AndroidApp.Droid
             }
             catch (Exception ex)
             {
-                MyLogger.e(TAG, ex.ToString());
+                AndroidLevelLogger.e(TAG, ex.ToString());
                 AndroidBridge.WifiScanningCallback?.Invoke(null, ex);
             }
         }
@@ -96,7 +96,7 @@ namespace AndroidApp.Droid
                 }
                 catch (Exception ex)
                 {
-                    MyLogger.e(TAG, ex);
+                    AndroidLevelLogger.e(TAG, ex);
                 }
 
 
@@ -109,7 +109,7 @@ namespace AndroidApp.Droid
                 }
                 catch (Exception ex)
                 {
-                    MyLogger.e(TAG, ex);
+                    AndroidLevelLogger.e(TAG, ex);
                 }
 
             }

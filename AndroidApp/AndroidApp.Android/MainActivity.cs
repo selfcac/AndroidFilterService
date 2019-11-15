@@ -99,12 +99,12 @@ namespace AndroidApp.Droid
 
             AndroidBridge._log_d = new Action<string, string>((tag, msg) =>
             {
-                MyLogger.d(tag, msg);
+                AndroidLevelLogger.d(tag, msg);
             });
 
             AndroidBridge._log_e = new Action<string, string>((tag, msg) =>
             {
-                MyLogger.e(tag, msg);
+                AndroidLevelLogger.e(tag, msg);
             });
 
             AndroidBridge._toast = new Action<string>(( msg) =>

@@ -64,7 +64,8 @@
     <Compile Include="FileHelpers.cs" />
     <Compile Include="MainActivity.cs" />
     <Compile Include="MyForegroundService.cs" />
-    <Compile Include="MyLogger.cs" />
+    <Compile Include="AndroidLevelLogger.cs" />
+    <Compile Include="PeriodicTask.cs" />
     <Compile Include="PermissionConstants.cs" />
     <Compile Include="Resources\Resource.designer.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

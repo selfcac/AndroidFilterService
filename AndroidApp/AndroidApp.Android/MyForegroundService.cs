@@ -56,13 +56,13 @@ namespace AndroidApp.Droid
             }
             catch (Exception ex)
             {
-                MyLogger.e(TAG, ex.ToString());
+                AndroidLevelLogger.e(TAG, ex.ToString());
             }
         }
 
         public override IBinder OnBind(Intent intent)
         {
-            MyLogger.d(TAG, "OnBind");
+            AndroidLevelLogger.d(TAG, "OnBind");
             return null;
         }
 
@@ -87,7 +87,7 @@ namespace AndroidApp.Droid
             }
             catch (Exception ex)
             {
-                MyLogger.e(TAG, ex);   
+                AndroidLevelLogger.e(TAG, ex);   
             }
         }
 
@@ -137,7 +137,7 @@ namespace AndroidApp.Droid
             }
             catch (Exception ex)
             {
-                MyLogger.e(TAG, ex.ToString());
+                AndroidLevelLogger.e(TAG, ex.ToString());
             }
         }
 
@@ -175,7 +175,7 @@ namespace AndroidApp.Droid
             }
             catch (Exception ex)
             {
-                MyLogger.e(TAG, ex.ToString());
+                AndroidLevelLogger.e(TAG, ex.ToString());
             }
 
             return StartCommandResult.Sticky;
@@ -194,7 +194,7 @@ namespace AndroidApp.Droid
             }
             catch (Exception ex)
             {
-                MyLogger.e(TAG, ex.ToString());
+                AndroidLevelLogger.e(TAG, ex.ToString());
             }
         }
 

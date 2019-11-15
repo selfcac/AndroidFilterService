@@ -6,7 +6,9 @@ namespace AndroidApp
 {
     class FilteringServiceFlow
     {
+
         static readonly string TAG = typeof(FilteringServiceFlow).Name.ToString();
+
 
         public void StartFlow()
         {
