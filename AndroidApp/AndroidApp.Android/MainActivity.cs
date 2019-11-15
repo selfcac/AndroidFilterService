@@ -119,6 +119,18 @@ namespace AndroidApp.Droid
                 }
             });
 
+            AndroidBridge._toast_from_back = new Action<string>((msg) =>
+            {
+                try
+                {
+                    AndroidUtils.ToastItFromBack(global_ctx, msg);
+                }
+                catch (Exception ex)
+                {
+                    Log.Error(AndroidBridge.TAG, ex.ToString());
+                }
+            });
+
             AndroidBridge._readAsset = new Func<string, string, string>((tag, asset_name) =>
             {
                 string result = "";
@@ -185,11 +197,11 @@ namespace AndroidApp.Droid
             };
 
             AndroidBridge._schedule_job = new Func<
-                TimeSpan, TimeSpan, TimeSpan?,Action<Action<bool>>, Func<bool>, Action, Func<bool>, int>(
+                TimeSpan?, TimeSpan?, TimeSpan?,Action<Action<bool>>, Func<bool>, Action, Func<bool>, int>(
             (latency, maxLatency, interval, onJob, shouldContinue, onJobRequirementAbort, shouldRetryAfterAbort) =>
             {
                 PeriodicTask.JobCallbacks job = new PeriodicTask.JobCallbacks();
-                if (PeriodicTask.scheduleJob(global_ctx, job,latency,maxLatency,interval))
+                if (PeriodicTask.scheduleJob(global_ctx, job,latency, maxLatency, interval))
                 {
                     return job.JobUniqueID;
                 }

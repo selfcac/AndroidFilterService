@@ -32,6 +32,11 @@ namespace AndroidApp
         {
             _toast?.Invoke(message);
         }
+        public static Action<string> _toast_from_back = null;
+        public static void ToastItFromBack(string message)
+        {
+            _toast_from_back?.Invoke(message);
+        }
 
         public static Func<string,string, string> _readAsset = null;
         public static string ReadAssetAsString(string TAG, string assetName)
@@ -71,7 +76,7 @@ namespace AndroidApp
         public static Action _stop_all_jobs = null;
         public static Action<int> _stop_job = null;
         public static Func<
-            TimeSpan, TimeSpan, TimeSpan?,
+            TimeSpan?, TimeSpan?, TimeSpan?,
             Action<Action<bool>>,
             Func<bool>,
             Action,
@@ -90,7 +95,7 @@ namespace AndroidApp
 
         public static int scheduleJob
             (
-            TimeSpan latency, TimeSpan maxLatency, TimeSpan? interval,
+            TimeSpan? latency, TimeSpan? maxLatency, TimeSpan? interval,
             Action<Action<bool>> onJob, Func<bool> shouldContinue, Action onJobRequirementAbort, Func<bool> shouldRetryAfterAbort
             )
         {

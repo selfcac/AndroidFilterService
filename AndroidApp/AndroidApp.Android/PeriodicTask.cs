@@ -85,7 +85,7 @@ namespace AndroidApp.Droid
             }
         }
 
-        public static bool scheduleJob(Context ctx, JobCallbacks callbacks, TimeSpan minLatency, TimeSpan maxLatency, TimeSpan? interval = null,
+        public static bool scheduleJob(Context ctx, JobCallbacks callbacks, TimeSpan? minLatency, TimeSpan? maxLatency, TimeSpan? interval = null,
             bool requireIdle = false, bool requireCharger = false, NetworkType requiredNet = NetworkType.Any,
             bool requireAboveLowBattery = false, bool requireAboveLowStorage = false)
         {
@@ -101,8 +101,7 @@ namespace AndroidApp.Droid
 
                 var jobBuilder = new JobInfo
                     .Builder(jobID, JobServiceComponent)
-                    .SetMinimumLatency((long)minLatency.TotalMilliseconds)
-                    .SetOverrideDeadline((long)maxLatency.TotalMilliseconds)
+                    
                     .SetRequiresDeviceIdle(requireIdle)
                     .SetRequiresCharging(requireCharger)
                     .SetRequiredNetworkType(requiredNet)
@@ -113,7 +112,14 @@ namespace AndroidApp.Droid
                 long intervalMillisecond = (long)(interval?.TotalMilliseconds ?? 0);
                 if (intervalMillisecond > 0L)
                 {
+                    if (intervalMillisecond < JobInfo.MinPeriodMillis)
+                        throw new Exception("Period interval must be at least: " + JobInfo.MinPeriodMillis);
                     jobBuilder.SetPeriodic(intervalMillisecond);
+                }
+                else
+                {
+                    jobBuilder.SetMinimumLatency((long)(minLatency?.TotalMilliseconds ?? 0L));
+                    jobBuilder.SetOverrideDeadline((long)(maxLatency?.TotalMilliseconds ?? 0L));
                 }
 
                 JobInfo job = jobBuilder.Build();

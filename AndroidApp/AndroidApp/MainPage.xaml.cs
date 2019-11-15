@@ -78,5 +78,35 @@ namespace AndroidApp
         {
             AndroidBridge.StartForgroundService();
         }
+
+        int counter = 0;
+     
+        private void TestTask_Clicked(object sender, EventArgs e)
+        {
+            int id = AndroidBridge.scheduleJob(null,null, TimeSpan.FromSeconds(5),
+                (finishFunc) => {
+                    if (counter < 6)
+                    {
+                        counter++; AndroidBridge.ToastItFromBack("Counter: " + counter);
+                    }
+                    else
+                    {
+                        finishFunc(false);
+                    }
+                },
+                () => counter < 6,
+                null,
+                () => false
+                );
+
+            if (id > 0)
+            {
+                AndroidBridge.ToastIt("Task started");
+            }
+            else
+            {
+                AndroidBridge.ToastIt("Task failed");
+            }
+        }
     }
 }

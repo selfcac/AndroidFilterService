@@ -9,7 +9,8 @@
             <StackLayout BackgroundColor="Green" Margin="5">
                 <Label Text="Allowed actions" 
                    HorizontalOptions="Center" FontAttributes="Bold" />
-                
+
+                <Button Text="Test Tasks" x:Name="testTask"  Clicked="TestTask_Clicked"></Button>
                 <Button Text="Is unlocked?" ></Button>
                 <StackLayout Orientation="Horizontal">
                     <Button Text="Serivce Start" WidthRequest="150" x:Name="btnStartService" Clicked="BtnStartService_Clicked"></Button>

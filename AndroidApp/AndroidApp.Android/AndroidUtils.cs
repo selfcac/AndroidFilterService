@@ -20,9 +20,22 @@ namespace AndroidApp.Droid
             Toast.MakeText(ctx, message, isLong ? ToastLength.Long : ToastLength.Short).Show();
         }
 
+        public static void ToastItFromBack(Context ctx, string message, bool isLong = true)
+        {
+            Handler mainHandler = new Handler(Looper.MainLooper);
+            Java.Lang.Runnable runnableToast = new Java.Lang.Runnable(() =>
+            {
+                Toast.MakeText(ctx, message, isLong ? ToastLength.Long : ToastLength.Short).Show();
+            });
+
+            mainHandler.Post(runnableToast);
+        }
+
         public static string logFormat(string myTag, char Level, string message)
         {
             return string.Format("[{0}] {1}/{2} {3}", DateTime.Now, Level, myTag, message);
         }
+
+       
     }
 }
