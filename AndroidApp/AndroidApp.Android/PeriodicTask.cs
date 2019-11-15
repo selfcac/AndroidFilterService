@@ -20,28 +20,64 @@ namespace AndroidApp.Droid
     {
         static readonly string TAG = typeof(PeriodicTask).Name.ToString();
 
-        private static int _job_counter = 0;
-        private static object _job_counter_lock = new object();
-        
-        public static int getUniqueJobId()
-        {
-            var newId = -1;
-            lock (_job_counter_lock)
-            {
-                 newId = _job_counter++;
-            }
-            return newId;
-        }
+       
 
         static Dictionary<int, JobCallbacks> allJobs = new Dictionary<int, JobCallbacks>();
 
         public class JobCallbacks
         {
+            private static int _job_counter = 0;
+            private static object _job_counter_lock = new object();
+
+            private static int getUniqueJobId()
+            {
+                var newId = -1;
+                lock (_job_counter_lock)
+                {
+                    newId = _job_counter++;
+                }
+                return newId;
+            }
+
+            private int _my_job_id = -1;
+            public int JobUniqueID { get { return _my_job_id; } }
+
+            public JobCallbacks()
+            {
+                _my_job_id = getUniqueJobId();
+            }
+
             public Action<Action<bool>> onJob = null;
             public Func<bool> shouldContinue = null;
 
             public Action onJobRequirementAbort = null;
             public Func<bool> shouldRetryAfterAbort = null;
+        }
+
+        public static void cancelAllJobs(Context ctx)
+        {
+            try
+            {
+                var manager = (JobSchedulerType)ctx.GetSystemService(Context.JobSchedulerService);
+                manager.CancelAll();
+            }
+            catch (Exception ex)
+            {
+                AndroidLevelLogger.e(TAG, ex);
+            }
+        }
+
+        public static void cancelJobById(Context ctx, JobCallbacks job)
+        {
+            try
+            {
+                var manager = (JobSchedulerType)ctx.GetSystemService(Context.JobSchedulerService);
+                manager.Cancel(job.JobUniqueID);
+            }
+            catch (Exception ex)
+            {
+                AndroidLevelLogger.e(TAG, ex);
+            }
         }
 
         public static bool scheduleJob(Context ctx, JobCallbacks callbacks, TimeSpan minLatency, TimeSpan maxLatency, TimeSpan? interval = null,
@@ -51,7 +87,7 @@ namespace AndroidApp.Droid
             int jobID = -1;
             bool success = false;
 
-            jobID = getUniqueJobId();
+            jobID = callbacks.JobUniqueID;
             allJobs.Add(jobID, callbacks);
 
             try
