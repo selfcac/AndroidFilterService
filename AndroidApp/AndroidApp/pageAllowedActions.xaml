@@ -8,8 +8,8 @@
             <Button Text="Is unlocked?" ></Button>
 
             <StackLayout Orientation="Horizontal">
-                <Button Text="Serivce Start" WidthRequest="150" x:Name="btnStartService" Clicked="BtnStartService_Clicked"></Button>
-                <Button Text="Restart" x:Name="btnRestartService" Clicked="BtnRestartService_Clicked"></Button>
+                <Button Text="Serivce Start" WidthRequest="150" x:Name="btnStartService" ></Button>
+                <Button Text="Restart" x:Name="btnRestartService" ></Button>
             </StackLayout>
             <Button Text="Start filtering" ></Button>
             

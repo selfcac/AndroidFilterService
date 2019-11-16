@@ -6,7 +6,7 @@
     <ScrollView>
         <StackLayout Orientation="Vertical">
             <Button Text="Stop filtering" ></Button>
-            <Button Text="Stop Service" x:Name="btnStopService" Clicked="BtnStopService_Clicked" ></Button>
+            <Button Text="Stop Service" x:Name="btnStopService"  ></Button>
             <Button Text="Set unlock password" ></Button>
             <Button Text="Lock To Date" ></Button>
             
