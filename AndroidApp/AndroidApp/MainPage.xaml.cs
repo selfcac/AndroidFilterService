@@ -17,12 +17,6 @@ namespace AndroidApp
             InitializeComponent();
         }
 
-       
-
-        private void BtnScan_Clicked(object sender, EventArgs e)
-        {
-            AndroidBridge.StartWifiScanning();
-        }
 
         private void BtnRestartService_Clicked(object sender, EventArgs e)
         {
@@ -40,40 +34,26 @@ namespace AndroidApp
             AndroidBridge.StartForgroundService();
         }
 
-        int counter = 0;
+      
 
-        public int scheduleRepeated()
+        private async void BtnOpenTest_Clicked(object sender, EventArgs e)
         {
-
-            return AndroidBridge.scheduleJob(TimeSpan.FromSeconds(5), TimeSpan.FromSeconds(10), null,
-               (finishFunc) => {
-                   if (counter < 6)
-                   {
-                       counter++;
-                       AndroidBridge.ToastItFromBack("Counter: " + counter);
-                       AndroidBridge.d(TAG,"Task counter: " + counter);
-                       scheduleRepeated();
-                   }
-                   finishFunc(true);
-               },
-               () => counter < 6,
-               null,
-               () => false
-               );
+            await Application.Current.MainPage.Navigation.PushAsync(new TestPage());
         }
-     
-        private void TestTask_Clicked(object sender, EventArgs e)
-        {
-            int id = scheduleRepeated();
 
-            if (id > -1)
-            {
-                AndroidBridge.ToastIt("Task started");
-            }
-            else
-            {
-                AndroidBridge.ToastIt("Task failed");
-            }
+        private void BtnAllowedPage_Clicked(object sender, EventArgs e)
+        {
+
+        }
+
+        private void BtnUnlockPage_Clicked(object sender, EventArgs e)
+        {
+
+        }
+
+        private void BtnLockedPage_Clicked(object sender, EventArgs e)
+        {
+
         }
     }
 }

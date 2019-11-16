@@ -2,25 +2,31 @@
 <ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              xmlns:local="clr-namespace:AndroidApp"
-             x:Class="AndroidApp.MainPage">
+             x:Class="AndroidApp.MainPage" Title="selfCAC Main">
 
     <ScrollView>
         <StackLayout>
+            <Button x:Name="btnOpenTest" Text="Test page" Clicked="BtnOpenTest_Clicked" 
+                    BackgroundColor="Coral" TextColor="White" Margin="5"/>
+            <Button x:Name="btnAllowedPage" Text="Allowed actions" Clicked="BtnAllowedPage_Clicked" 
+                    BackgroundColor="LightGreen" TextColor="Black" Margin="5"/>
+            <Button x:Name="btnUnlockPage" Text="Unlock Methods" Clicked="BtnUnlockPage_Clicked" 
+                    BackgroundColor="LightYellow" TextColor="Black" Margin="5"/>
+            <Button x:Name="btnLockedPage" Text="Locked actions" Clicked="BtnLockedPage_Clicked" 
+                    BackgroundColor="IndianRed" TextColor="White" Margin="5"/>
+            
             <StackLayout BackgroundColor="Green" Margin="5">
                 <Label Text="Allowed actions" 
                    HorizontalOptions="Center" FontAttributes="Bold" />
-
-                <Button Text="Test Tasks" x:Name="testTask"  Clicked="TestTask_Clicked"></Button>
+                
                 <Button Text="Is unlocked?" ></Button>
+                
                 <StackLayout Orientation="Horizontal">
                     <Button Text="Serivce Start" WidthRequest="150" x:Name="btnStartService" Clicked="BtnStartService_Clicked"></Button>
                     <Button Text="Restart" x:Name="btnRestartService" Clicked="BtnRestartService_Clicked"></Button>
-                    <Button Text="Test" ></Button>
                 </StackLayout>
-
-                <Button Text="Start Filtering" ></Button>
-                <Button Text="Export Wifi List" ></Button>
-                <Button Text="Start Wifi Scan"  x:Name="btnScan" Clicked="BtnScan_Clicked"></Button>
+                <Button Text="Start filtering" ></Button>
+                <Button Text="Export Policies" ></Button>
             </StackLayout>
 
             <StackLayout BackgroundColor="LightYellow" Margin="5">
@@ -34,11 +40,10 @@
             <StackLayout BackgroundColor="IndianRed" Margin="5">
                 <Label Text="Locked actions" 
                    HorizontalOptions="Center" FontAttributes="Bold" />
-                
+                <Button Text="Stop filtering" ></Button>
                 <Button Text="Stop Service" x:Name="btnStopService" Clicked="BtnStopService_Clicked" ></Button>
-                <Button Text="Stop Filtering" ></Button>
-                <Button Text="Set password" ></Button>
-                <Button Text="Lock" ></Button>
+                <Button Text="Set unlock password" ></Button>
+                <Button Text="Lock To Date" ></Button>
                 <Button Text="Import 3 Policies" ></Button>
                 <Label Text="URL, Time and Wifis" 
                    HorizontalOptions="Center" />
