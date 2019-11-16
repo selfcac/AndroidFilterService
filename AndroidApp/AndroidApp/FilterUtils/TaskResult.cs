@@ -37,13 +37,21 @@ namespace AndroidApp.FilterUtils
     {
         public T result;
 
-        public static TaskResultExtra<T> setResult(T resultData)
+        public static TaskResultExtra<T> withResult(T resultData)
         {
             return new TaskResultExtra<T>()
             {
                 success = true,
                 result = resultData
             };
+        }
+
+        public static T From(TaskResult t, T defaultValue = default(T))
+        {
+            var result = t as TaskResultExtra<T>;
+            if (result != null)
+                return result.result;
+            return defaultValue;
         }
 
         public static implicit operator T(TaskResultExtra<T> o)

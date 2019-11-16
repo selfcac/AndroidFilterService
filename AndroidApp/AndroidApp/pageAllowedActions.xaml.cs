@@ -1,4 +1,5 @@
-﻿using System;
+﻿using AndroidApp.FilterUtils;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -16,5 +17,11 @@ namespace AndroidApp
 		{
 			InitializeComponent ();
 		}
-	}
+
+        private void BtnCheckLocked_Clicked(object sender, EventArgs e)
+        {
+            TaskResult unlockedStatus = TimeLock.isLocked();
+            AndroidBridge.ToastIt(string.Format("Locked? {0}, Reason: '{1}'", unlockedStatus.success, unlockedStatus.eventReason));
+        }
+    }
 }

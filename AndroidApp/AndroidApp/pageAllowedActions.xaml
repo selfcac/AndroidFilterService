@@ -5,7 +5,7 @@
              Title="Allowed Actions">
     <ScrollView>
         <StackLayout Orientation="Vertical">
-            <Button Text="Is unlocked?" ></Button>
+            <Button x:Name="btnCheckLocked" Text="Is unlocked?" Clicked="BtnCheckLocked_Clicked" ></Button>
 
             <StackLayout Orientation="Horizontal">
                 <Button Text="Serivce Start" WidthRequest="150" x:Name="btnStartService" ></Button>

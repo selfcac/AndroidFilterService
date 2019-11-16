@@ -7,45 +7,94 @@ namespace AndroidApp.FilterUtils
 {
     class TimeLock
     {
+
         static readonly string TAG = typeof(TimeLock).Name.ToString();
+      
 
-        bool isLocked()
+        public static string ForceLockDate(DateTime date)
         {
-            string filename = "";
-            string result ="No issue (init)"; // unlocked on error by default
-            bool isLocked = true;
+            string result;
+            string unlockPath = Filenames.LOCK_DATE;
 
+            AndroidBridge.d(TAG, "(*) Locking until '" + date.ToString() + "'");
+            if (File.Exists(unlockPath))
+                File.Delete(unlockPath);
+            File.WriteAllText(unlockPath, date.ToString());
+
+            result = "Sucess! Locked to " + date.ToString();
+            return result;
+        }
+
+        public static string TrySetLockDate(DateTime date)
+        {
+            string result = "Unkown lock result";
+            TaskResult unlockedStatus = isLocked();
+            // Lock it!
             try
             {
-                if (File.Exists(filename))
+                if (!unlockedStatus) // Only if not already locked!
                 {
-                    DateTime unlock = DateTime.Now.Subtract(TimeSpan.FromMinutes(1));
-                    if (DateTime.TryParse(File.ReadAllText(filename), out unlock))
+                    if (date > DateTime.Now)
                     {
-                        if (unlock > DateTime.Now)
+                        result = ForceLockDate(date);
+                    }
+                    else
+                    {
+                        result = "Please choose *future* time";
+                    }
+                }
+                else
+                {
+                    result = unlockedStatus.eventReason;
+                }
+            }
+            catch (Exception ex)
+            {
+                result = "Failed lock: " + ex.Message;
+            }
+            return result;
+        }
+
+        static string LockedFormat(DateTime locked)
+        {
+            return "Locked until: " + locked.ToString() + ", Left: " +
+                string.Format("{0:%d}days {0:%h}h {0:%m}m {0:%s}sec", (locked - DateTime.Now));
+        }
+
+        public static TaskResult isLocked()
+        {
+            // Fail - not locked
+
+            TaskResult isLocked = TaskResult.Fail("No issue (init)"); // unlocked on error by default
+            try
+            {
+                if (File.Exists(Filenames.LOCK_DATE))
+                {
+                    DateTime unlockDate = DateTime.Now.Subtract(TimeSpan.FromMinutes(1));
+                    if (DateTime.TryParse(File.ReadAllText(Filenames.LOCK_DATE), out unlockDate))
+                    {
+                        if (unlockDate > DateTime.Now)
                         {
-                            isLocked = true;
+                            isLocked = TaskResult.Success(LockedFormat(unlockDate));
                         }
                         else
                         {
-                            isLocked = false;
-                            result = "Lock expired";
+                            isLocked = TaskResult.Fail(reason: "Lock expired");
                         }
                     }
                 }
                 else
                 {
-                    isLocked = false;
-                    result = "File doesn't exits";
+                    isLocked = TaskResult.Fail(reason: "No file exist");
                 }
             }
             catch (Exception ex)
             {
-                isLocked = false;
-                result = ex.ToString();
+                isLocked = TaskResult.Fail(reason: ex.ToString());
             }
-
             return isLocked;
         }
+
+
     }
 }

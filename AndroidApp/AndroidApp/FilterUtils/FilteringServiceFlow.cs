@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Text;
 
-namespace AndroidApp
+namespace AndroidApp.FilterUtils
 {
     class FilteringServiceFlow
     {
