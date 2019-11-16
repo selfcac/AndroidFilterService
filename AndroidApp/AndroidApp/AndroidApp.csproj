@@ -18,6 +18,27 @@
   </ItemGroup>
 
   <ItemGroup>
+    <Reference Include="CommonStandard">
+      <HintPath>..\..\..\FilteringComponentsStandard\CommonStandard\bin\Debug\netstandard2.0\CommonStandard.dll</HintPath>
+    </Reference>
+    <Reference Include="HTTPProtocolFilter">
+      <HintPath>..\..\..\FilteringComponentsStandard\HTTPProtocolFilter\bin\Debug\netstandard2.0\HTTPProtocolFilter.dll</HintPath>
+    </Reference>
+    <Reference Include="TimeBlockFilter">
+      <HintPath>..\..\..\FilteringComponentsStandard\TimeBlockFilter\bin\Debug\netstandard2.0\TimeBlockFilter.dll</HintPath>
+    </Reference>
+  </ItemGroup>
+
+  <ItemGroup>
+    <EmbeddedResource Update="LockedAcions.xaml">
+      <Generator>MSBuild:UpdateDesignTimeXaml</Generator>
+    </EmbeddedResource>
+    <EmbeddedResource Update="pageAllowedActions.xaml">
+      <Generator>MSBuild:UpdateDesignTimeXaml</Generator>
+    </EmbeddedResource>
+    <EmbeddedResource Update="pageUnlockOptions.xaml">
+      <Generator>MSBuild:UpdateDesignTimeXaml</Generator>
+    </EmbeddedResource>
     <EmbeddedResource Update="TestPage.xaml">
       <Generator>MSBuild:UpdateDesignTimeXaml</Generator>
     </EmbeddedResource>

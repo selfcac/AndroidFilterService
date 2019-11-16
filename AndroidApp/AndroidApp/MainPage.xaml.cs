@@ -17,43 +17,24 @@ namespace AndroidApp
             InitializeComponent();
         }
 
-
-        private void BtnRestartService_Clicked(object sender, EventArgs e)
-        {
-            AndroidBridge.StopForgroundService();
-            AndroidBridge.StartForgroundService();
-        }
-
-        private void BtnStopService_Clicked(object sender, EventArgs e)
-        {
-            AndroidBridge.StopForgroundService();
-        }
-
-        private void BtnStartService_Clicked(object sender, EventArgs e)
-        {
-            AndroidBridge.StartForgroundService();
-        }
-
-      
-
         private async void BtnOpenTest_Clicked(object sender, EventArgs e)
         {
             await Application.Current.MainPage.Navigation.PushAsync(new TestPage());
         }
 
-        private void BtnAllowedPage_Clicked(object sender, EventArgs e)
+        private async void BtnAllowedPage_Clicked(object sender, EventArgs e)
         {
-
+            await Application.Current.MainPage.Navigation.PushAsync(new pageAllowedActions());
         }
 
-        private void BtnUnlockPage_Clicked(object sender, EventArgs e)
+        private async void BtnUnlockPage_Clicked(object sender, EventArgs e)
         {
-
+            await Application.Current.MainPage.Navigation.PushAsync(new pageUnlockOptions());
         }
 
-        private void BtnLockedPage_Clicked(object sender, EventArgs e)
+        private async void BtnLockedPage_Clicked(object sender, EventArgs e)
         {
-
+            await Application.Current.MainPage.Navigation.PushAsync(new LockedAcions());
         }
     }
 }

@@ -14,43 +14,9 @@
                     BackgroundColor="LightYellow" TextColor="Black" Margin="5"/>
             <Button x:Name="btnLockedPage" Text="Locked actions" Clicked="BtnLockedPage_Clicked" 
                     BackgroundColor="IndianRed" TextColor="White" Margin="5"/>
-            
-            <StackLayout BackgroundColor="Green" Margin="5">
-                <Label Text="Allowed actions" 
-                   HorizontalOptions="Center" FontAttributes="Bold" />
-                
-                <Button Text="Is unlocked?" ></Button>
-                
-                <StackLayout Orientation="Horizontal">
-                    <Button Text="Serivce Start" WidthRequest="150" x:Name="btnStartService" Clicked="BtnStartService_Clicked"></Button>
-                    <Button Text="Restart" x:Name="btnRestartService" Clicked="BtnRestartService_Clicked"></Button>
-                </StackLayout>
-                <Button Text="Start filtering" ></Button>
-                <Button Text="Export Policies" ></Button>
-            </StackLayout>
-
-            <StackLayout BackgroundColor="LightYellow" Margin="5">
-                <Label Text="Unlock" 
-                   TextColor="Black"
-                   HorizontalOptions="Center" FontAttributes="Bold" />
-                
-                <Button Text="Reset Lock with pass" ></Button>
-            </StackLayout>
-
-            <StackLayout BackgroundColor="IndianRed" Margin="5">
-                <Label Text="Locked actions" 
-                   HorizontalOptions="Center" FontAttributes="Bold" />
-                <Button Text="Stop filtering" ></Button>
-                <Button Text="Stop Service" x:Name="btnStopService" Clicked="BtnStopService_Clicked" ></Button>
-                <Button Text="Set unlock password" ></Button>
-                <Button Text="Lock To Date" ></Button>
-                <Button Text="Import 3 Policies" ></Button>
-                <Label Text="URL, Time and Wifis" 
-                   HorizontalOptions="Center" />
-            </StackLayout>
+            <Label Text="selfCAC @ github.com"></Label>
         </StackLayout>
-        
-        <!-- Expose \ Import Files Wifi + Policies  (except pass file) -->
+
     </ScrollView>
 
 </ContentPage>

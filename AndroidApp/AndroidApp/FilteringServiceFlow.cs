@@ -9,6 +9,7 @@ namespace AndroidApp
 
         static readonly string TAG = typeof(FilteringServiceFlow).Name.ToString();
 
+        public bool isFiltering = true; // Should we filter with http\time?
 
         public void StartFlow()
         {
