@@ -78,12 +78,30 @@ namespace AndroidApp.Droid
             return channel;
         }
 
+
+        bool _isServiceUp = false;
+        public bool IsServiceUp() { return _isServiceUp; }
+
+        void managedStart()
+        {
+            _isServiceUp = true;
+            AndroidBridge.OnForgroundServiceStart?.Invoke();
+        }
+
+        void managedStop()
+        {
+            _isServiceUp = false;
+            AndroidBridge.OnForgroundServiceStop?.Invoke();
+            StopForeground(true);
+            StopSelf();  
+        }
+
         public override void OnCreate()
         {
             // Should be called once in lifetime of this service    
             try
             {
-                AndroidBridge.OnForgroundServiceStart?.Invoke();
+                managedStart();
             }
             catch (Exception ex)
             {
@@ -162,9 +180,7 @@ namespace AndroidApp.Droid
                             break;
 
                         case ACTION_STOP_SERVICE:
-                            AndroidBridge.OnForgroundServiceStop?.Invoke();
-                            StopForeground(true);
-                            StopSelf();
+                            managedStop();
                             break;
 
                         default:
@@ -185,12 +201,9 @@ namespace AndroidApp.Droid
         {
             try
             {
-                AndroidBridge.OnForgroundServiceStop?.Invoke();
-
                 // Remove the notification from the status bar.
                 var notificationManager = (NotificationManager)GetSystemService(NotificationService);
                 notificationManager.Cancel(SERVICE_RUNNING_NOTIFICATION_ID);
-
             }
             catch (Exception ex)
             {
