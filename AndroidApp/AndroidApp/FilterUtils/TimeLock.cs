@@ -19,7 +19,7 @@ namespace AndroidApp.FilterUtils
         }
 
 
-        public static string ForceLockDate(DateTime date)
+        private static string ForceLockDate(DateTime date)
         {
             string result = "";
             try
@@ -39,6 +39,11 @@ namespace AndroidApp.FilterUtils
                 result = ex.ToString();
             }
             return result;
+        }
+
+        public static string ForceUnlockNow()
+        {
+            return ForceLockDate(DateTime.Now.Add(TimeSpan.FromMinutes(-1)));
         }
 
         public static string TrySetLockDate(DateTime date)

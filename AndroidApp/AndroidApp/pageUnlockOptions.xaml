@@ -5,7 +5,8 @@
              Title="Unlock Options">
     <ScrollView>
         <StackLayout Orientation="Vertical">
-            <Button Text="Reset Lock with pass" ></Button>
+            <Button x:Name="btnUnlockWithPass" Text="Reset Lock with pass" 
+                    Clicked="BtnUnlockWithPass_Clicked"/>
 
         </StackLayout>
     </ScrollView>

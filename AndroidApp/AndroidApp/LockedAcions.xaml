@@ -5,15 +5,20 @@
              Title="Locked actions">
     <ScrollView>
         <StackLayout Orientation="Vertical">
-            <Button x:Name="btnStopFiltering" Text="Stop filtering" ></Button>
-            <Button x:Name="btnStopService" Text="Stop Service"></Button>
-            <Button x:Name="btnSetMasterPass" Text="Set unlock password" ></Button>
-            <Button x:Name="btnLock" Text="Lock To Date" Clicked="BtnLock_Clicked"></Button>
+            <Button x:Name="btnStopFiltering" Text="Stop filtering"/>
+            <Button x:Name="btnStopService" Text="Stop Service" 
+                    Clicked="BtnStopService_Clicked"/>
+            <Button x:Name="btnSetMasterPass" Text="Set unlock password" 
+                    Clicked="BtnSetMasterPass_Clicked"/>
+            <Button x:Name="btnLock" Text="Lock To Date" Clicked="BtnLock_Clicked" />
 
 
-            <Button x:Name="btnImportPolicies" Text="Import 3 Policies" ></Button>
+            <Button x:Name="btnImportPolicies" Text="Import 3 Policies" />
             <Label Text="URL, Time and Wifis" 
                    HorizontalOptions="Center" />
+
+            <Button x:Name="btnDebugUnlock" Text="!!!DEBUG!!! Unlock" 
+                    Clicked="BtnDebugUnlock_Clicked" BackgroundColor="LightSalmon"/>
         </StackLayout>
     </ScrollView>
 </ContentPage>
