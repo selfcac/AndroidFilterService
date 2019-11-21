@@ -2,6 +2,8 @@
 using System.Collections.Generic;
 using System.IO;
 using System.Text;
+using System.Threading.Tasks;
+using Xamarin.Forms;
 
 namespace AndroidApp.FilterUtils
 {
@@ -9,19 +11,33 @@ namespace AndroidApp.FilterUtils
     {
 
         static readonly string TAG = typeof(TimeLock).Name.ToString();
-      
+
+        static string LockedFormat(DateTime locked)
+        {
+            return "Locked until: " + locked.ToString() + ", Left: " +
+                string.Format("{0:%d}days {0:%h}h {0:%m}m {0:%s}sec", (locked - DateTime.Now));
+        }
+
 
         public static string ForceLockDate(DateTime date)
         {
-            string result;
-            string unlockPath = Filenames.LOCK_DATE;
+            string result = "";
+            try
+            {
+                string unlockPath = Filenames.LOCK_DATE.getAppPrivate();
 
-            AndroidBridge.d(TAG, "(*) Locking until '" + date.ToString() + "'");
-            if (File.Exists(unlockPath))
-                File.Delete(unlockPath);
-            File.WriteAllText(unlockPath, date.ToString());
+                AndroidBridge.d(TAG, "(*) Locking until '" + date.ToString() + "'");
+                if (File.Exists(unlockPath))
+                    File.Delete(unlockPath);
+                File.WriteAllText(unlockPath, date.ToString());
 
-            result = "Sucess! Locked to " + date.ToString();
+                result = "Sucess! Locked to " + date.ToString();
+            }
+            catch (Exception ex)
+            {
+                AndroidBridge.e(TAG,ex);
+                result = ex.ToString();
+            }
             return result;
         }
 
@@ -55,12 +71,7 @@ namespace AndroidApp.FilterUtils
             return result;
         }
 
-        static string LockedFormat(DateTime locked)
-        {
-            return "Locked until: " + locked.ToString() + ", Left: " +
-                string.Format("{0:%d}days {0:%h}h {0:%m}m {0:%s}sec", (locked - DateTime.Now));
-        }
-
+        
         public static TaskResult isLocked()
         {
             // Fail - not locked
@@ -68,10 +79,10 @@ namespace AndroidApp.FilterUtils
             TaskResult isLocked = TaskResult.Fail("No issue (init)"); // unlocked on error by default
             try
             {
-                if (File.Exists(Filenames.LOCK_DATE))
+                if (File.Exists(Filenames.LOCK_DATE.getAppPrivate()))
                 {
                     DateTime unlockDate = DateTime.Now.Subtract(TimeSpan.FromMinutes(1));
-                    if (DateTime.TryParse(File.ReadAllText(Filenames.LOCK_DATE), out unlockDate))
+                    if (DateTime.TryParse(File.ReadAllText(Filenames.LOCK_DATE.getAppPrivate()), out unlockDate))
                     {
                         if (unlockDate > DateTime.Now)
                         {
@@ -95,6 +106,29 @@ namespace AndroidApp.FilterUtils
             return isLocked;
         }
 
+        public static async Task onlyUnlockedAsync(Func<Task> callback)
+        {
+            try
+            {
+                var isLocked = TimeLock.isLocked();
+                if (isLocked)
+                {
+                    AndroidBridge.ToastIt(isLocked.eventReason);
+                }
+                else
+                {
+                    await callback();
+                }
+            }
+            catch (Exception ex)
+            {
+                AndroidBridge.e(TAG, ex);
+            }
+        }
 
+        public static async Task onlyUnlocked(Action callback)
+        {
+            await onlyUnlockedAsync(async () => await Task.Run(callback));
+        }
     }
 }

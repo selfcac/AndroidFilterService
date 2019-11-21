@@ -1,0 +1,14 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             x:Class="AndroidApp.InputPages.pageLockedDatePicker">
+    <ScrollView>
+        <StackLayout>
+            <DatePicker x:Name="datePicker1" />
+            <TimePicker x:Name="timePicker1"/>
+            <Button x:Name="btnSet" Text="Set date!" 
+                    Clicked="BtnSet_Clicked"/>
+            
+        </StackLayout>
+    </ScrollView>
+</ContentPage>
