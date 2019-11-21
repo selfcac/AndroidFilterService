@@ -79,8 +79,8 @@ namespace AndroidApp.Droid
         }
 
 
-        bool _isServiceUp = false;
-        public bool IsServiceUp() { return _isServiceUp; }
+        static bool _isServiceUp = false;
+        public static bool IsServiceUp() { return _isServiceUp; }
 
         void managedStart()
         {
@@ -92,8 +92,12 @@ namespace AndroidApp.Droid
         {
             _isServiceUp = false;
             AndroidBridge.OnForgroundServiceStop?.Invoke();
+        }
+
+        void StopMyForegroundService()
+        {
             StopForeground(true);
-            StopSelf();  
+            StopSelf();
         }
 
         public override void OnCreate()
@@ -175,12 +179,13 @@ namespace AndroidApp.Droid
                             break;
 
                         case ACTION_RESTART_SERVICE:
-                            AndroidBridge.OnForgroundServiceStop?.Invoke();
-                            AndroidBridge.OnForgroundServiceStart?.Invoke();
+                            managedStop();
+                            managedStart();
                             break;
 
                         case ACTION_STOP_SERVICE:
                             managedStop();
+                            StopMyForegroundService();
                             break;
 
                         default:
@@ -204,6 +209,8 @@ namespace AndroidApp.Droid
                 // Remove the notification from the status bar.
                 var notificationManager = (NotificationManager)GetSystemService(NotificationService);
                 notificationManager.Cancel(SERVICE_RUNNING_NOTIFICATION_ID);
+
+                managedStop();
             }
             catch (Exception ex)
             {

@@ -72,6 +72,11 @@ namespace AndroidApp
             _stop_service?.Invoke();
         }
 
+        public static Func<bool> _is_service_up = null;
+        public static bool isForegroundServiceUp()
+        {
+            return _is_service_up?.Invoke() ?? false;
+        }
 
         public static Action _stop_all_jobs = null;
         public static Action<int> _stop_job = null;

@@ -30,14 +30,21 @@ namespace AndroidApp.FilterUtils
 
     class Filenames
     {
+        // Private:
         public static readonly RelativeFilePath LOCK_DATE = new RelativeFilePath("polcy_lock_date.txt");
-        public static readonly RelativeFilePath HTTP_POLICY = new RelativeFilePath("polcy_http_policy.json");
-        public static readonly RelativeFilePath TIME_POLICY = new RelativeFilePath("polcy_time_policy.json");
         public static readonly RelativeFilePath MASTER_PASSWORD = new RelativeFilePath("master_password.txt");
+
+        // May Exposed:
+        public static readonly RelativeFilePath HTTP_POLICY = new RelativeFilePath("http_policy.json");
+        public static readonly RelativeFilePath TIME_POLICY = new RelativeFilePath("time_policy.json");
+        public static readonly RelativeFilePath WIFI_POLICY = new RelativeFilePath("wifi_policy.json");
+
+        // Public:
+        public static readonly RelativeFilePath BLOCK_LOG = new RelativeFilePath("block_log.txt");
 
         public RelativeFilePath[] EXPOSED_POLICIES = new[]
         {
-            LOCK_DATE, HTTP_POLICY, TIME_POLICY
+            WIFI_POLICY, HTTP_POLICY, TIME_POLICY
         };
     }
 }

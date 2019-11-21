@@ -9,17 +9,23 @@ namespace AndroidApp.FilterUtils
 
         static readonly string TAG = typeof(FilteringServiceFlow).Name.ToString();
 
-        public bool isFiltering = true; // Should we filter with http\time?
 
         public void StartFlow()
         {
-            StartHttpServer();
-            StartPeriodicWifiChecker();
+            if (!AndroidBridge.isForegroundServiceUp())
+            {
+                StartHttpServer();
+                StartPeriodicWifiChecker();
+            }
+            else
+            {
+                AndroidBridge.ToastIt("Service already up!");
+            }
         }
 
         public void StartHttpServer()
         {
-            HttpServerCallback();
+            HttpFilteringServer.HttpCallbackRouter();
         }
 
         public void StartPeriodicWifiChecker()
@@ -27,14 +33,24 @@ namespace AndroidApp.FilterUtils
             WifiCheckerCallback();
         }
 
-        public void HttpServerCallback()
-        {
-
-        }
-
         public void WifiCheckerCallback()
         {
+            // How to avoid when hanging (assume bad zone)
+        }
 
+       // ============================================
+
+        public void StopFlow()
+        {
+            if (AndroidBridge.isForegroundServiceUp())
+            {
+                StopPeriodicTasks();
+                StopHTTPServer();
+            }
+            else
+            {
+                AndroidBridge.ToastIt("Service already stopped");
+            }
         }
 
         public void StopHTTPServer()
@@ -45,12 +61,6 @@ namespace AndroidApp.FilterUtils
         public void StopPeriodicTasks()
         {
 
-        }
-
-        public void StopFlow()
-        {
-            StopPeriodicTasks();
-            StopHTTPServer();
         }
     }
 }

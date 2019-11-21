@@ -36,5 +36,10 @@ namespace AndroidApp
         {
             await Application.Current.MainPage.Navigation.PushAsync(new LockedAcions());
         }
+
+        private void BtnInfoPage_Clicked(object sender, EventArgs e)
+        {
+
+        }
     }
 }

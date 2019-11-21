@@ -185,6 +185,11 @@ namespace AndroidApp.Droid
                 MyForegroundService.StartForegroundServiceCompat<MyForegroundService>(global_ctx, MyForegroundService.ACTION_STOP_SERVICE);
             });
 
+            AndroidBridge._is_service_up = new Func<bool>(() =>
+            {
+                return MyForegroundService.IsServiceUp();
+            });
+
 
             AndroidBridge._stop_all_jobs = () =>
             {
