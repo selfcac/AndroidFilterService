@@ -44,14 +44,15 @@ namespace AndroidApp.Droid
         {
             try
             {
-                // register the Broadcast receiver to get the list of Wifi Networks
-                ctx.RegisterReceiver(myWifiReceiver, new IntentFilter(WifiManager.ScanResultsAvailableAction));
-
+                
                 // Requirements here: https://developer.android.com/guide/topics/connectivity/wifi-scan
                 if (myWifiManager.IsWifiEnabled)
                 {
+                    // register the Broadcast receiver to get the list of Wifi Networks
+                    ctx.RegisterReceiver(myWifiReceiver, new IntentFilter(WifiManager.ScanResultsAvailableAction));
                     if (!myWifiManager?.StartScan() ?? false)
                     {
+                        ctx.UnregisterReceiver(myWifiReceiver);
                         AndroidBridge.WifiScanningCallback?.Invoke(null,null, new Exception("Starting scan failed quietly"));
                     }
                 }
@@ -106,6 +107,12 @@ namespace AndroidApp.Droid
 
             public static void GetLatestWifiScanResults(bool isUpToDate = true)
             {
+                if (!myWifiManager.IsWifiEnabled)
+                {
+                    AndroidBridge.WifiScanningCallback?.Invoke(null, null, new Exception("Wifi is not on"));
+                    return;
+                }
+
                 try
                 {
                     IList<ScanResult> scanwifinetworks = myWifiManager.ScanResults;
