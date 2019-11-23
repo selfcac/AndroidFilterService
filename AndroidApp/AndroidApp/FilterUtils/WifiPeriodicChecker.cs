@@ -11,6 +11,11 @@ namespace AndroidApp.FilterUtils
 
         }
 
+        public void WifiCheckerCallback()
+        {
+            // How to avoid when hanging (assume bad zone)
+        }
+
         public static void StopChecking()
         {
 

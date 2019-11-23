@@ -55,7 +55,13 @@ namespace AndroidApp
         {
             _start_wifi_scan?.Invoke();
         }
-        public static Action<List<String>,Exception> WifiScanningCallback = null;     
+        public static Action<List<String>,TimeSpan?,Exception> WifiScanningCallback = null;
+
+        public static Action _get_wifi_now = null;
+        public static void GetLatestWifiResults()
+        {
+            _get_wifi_now?.Invoke();
+        }
 
         public static Action OnForgroundServiceStart = null;
         public static Action OnForgroundServiceStop = null;

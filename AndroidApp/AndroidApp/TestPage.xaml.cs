@@ -58,5 +58,10 @@ namespace AndroidApp
         {
             AndroidBridge.StartWifiScanning();
         }
+
+        private void BtnScanWifiNow_Clicked(object sender, EventArgs e)
+        {
+            AndroidBridge.GetLatestWifiResults();
+        }
     }
 }

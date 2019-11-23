@@ -36,14 +36,17 @@ namespace AndroidApp
 
         private static void SetupAndroidBridge()
         {
-            AndroidBridge.WifiScanningCallback = new Action<List<string>, Exception>((list, ex) =>
+            AndroidBridge.WifiScanningCallback = new Action<List<string>,TimeSpan?, Exception>((list,timespan, ex) =>
             {
                 if (ex == null)
                 {
+                    TimeSpan last = timespan ?? TimeSpan.FromDays(1);
+
                     string wifiInfo = string.Format(
-                        "Sucess? {0} Got {1}, First: {2}",
+                        "Sucess? {0} Got {1}, Time: {2}, First: {3}",
                         (ex == null),
                         list?.Count ?? -1,
+                        last,
                         (list != null && list.Count > 0) ? list[0] : "<none>"
                     );
                     AndroidBridge.d(TAG, wifiInfo);

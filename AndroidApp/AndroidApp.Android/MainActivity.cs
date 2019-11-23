@@ -172,7 +172,12 @@ namespace AndroidApp.Droid
 
             AndroidBridge._start_wifi_scan = new Action(() =>
             {
-                WifiScan.RequestScan(global_ctx);
+                WifiScan.StartScanning(global_ctx);
+            });
+
+            AndroidBridge._get_wifi_now = new Action(() =>
+            {
+                WifiScan.WifiReceiver.GetLatestWifiScanResults();
             });
 
             AndroidBridge._start_service = new Action(() =>

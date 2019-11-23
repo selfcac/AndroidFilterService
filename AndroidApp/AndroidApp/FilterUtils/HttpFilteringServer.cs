@@ -6,7 +6,17 @@ namespace AndroidApp.FilterUtils
 {
     class HttpFilteringServer
     {
+        public void StartHttpServer()
+        {
+            HttpFilteringServer.HttpCallbackRouter();
+        }
+
         public static void HttpCallbackRouter()
+        {
+
+        }
+
+        public void StopHTTPServer()
         {
 
         }

@@ -9,13 +9,20 @@ namespace AndroidApp.FilterUtils
 
         static readonly string TAG = typeof(FilteringServiceFlow).Name.ToString();
 
+        HttpFilteringServer myHTTPServer = new HttpFilteringServer();
+        WifiPeriodicChecker myWifiChecker = new WifiPeriodicChecker();
 
         public void StartFlow()
         {
             if (!AndroidBridge.isForegroundServiceUp())
             {
-                StartHttpServer();
-                StartPeriodicWifiChecker();
+                AndroidBridge.OnForgroundServiceStart = () =>
+                {
+                    AndroidBridge.d(TAG, "Starting filtering flow");
+                    myHTTPServer.StartHttpServer();
+                    StartPeriodicTasks();
+                };
+                AndroidBridge.StartForgroundService();
             }
             else
             {
@@ -23,29 +30,22 @@ namespace AndroidApp.FilterUtils
             }
         }
 
-        public void StartHttpServer()
+        public void StartPeriodicTasks()
         {
-            HttpFilteringServer.HttpCallbackRouter();
+            myWifiChecker.WifiCheckerCallback();
         }
-
-        public void StartPeriodicWifiChecker()
-        {
-            WifiCheckerCallback();
-        }
-
-        public void WifiCheckerCallback()
-        {
-            // How to avoid when hanging (assume bad zone)
-        }
-
-       // ============================================
 
         public void StopFlow()
         {
             if (AndroidBridge.isForegroundServiceUp())
             {
-                StopPeriodicTasks();
-                StopHTTPServer();
+                AndroidBridge.OnForgroundServiceStop = () =>
+                {
+                    AndroidBridge.d(TAG, "Stopping filtering flow");
+                    StopPeriodicTasks();
+                    myHTTPServer.StopHTTPServer();
+                };
+                AndroidBridge.StopForgroundService();
             }
             else
             {
@@ -53,14 +53,9 @@ namespace AndroidApp.FilterUtils
             }
         }
 
-        public void StopHTTPServer()
-        {
-
-        }
-
         public void StopPeriodicTasks()
         {
-
+            AndroidBridge.stopAllJobs();
         }
     }
 }
