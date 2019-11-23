@@ -5,15 +5,13 @@
              Title="Locked actions">
     <ScrollView>
         <StackLayout Orientation="Vertical">
-            <Button x:Name="btnStopFiltering" Text="Stop filtering"/>
-            <Button x:Name="btnStopService" Text="Stop Service" 
-                    Clicked="BtnStopService_Clicked"/>
+            <Button x:Name="btnStopFiltering" Text="Stop filtering" Clicked="BtnStopFiltering_Clicked"/>
             <Button x:Name="btnSetMasterPass" Text="Set unlock password" 
                     Clicked="BtnSetMasterPass_Clicked"/>
             <Button x:Name="btnLock" Text="Lock To Date" Clicked="BtnLock_Clicked" />
 
 
-            <Button x:Name="btnImportPolicies" Text="Import 3 Policies" />
+            <Button x:Name="btnImportPolicies" Text="Import 3 Policies" Clicked="BtnImportPolicies_Clicked" />
             <Label Text="URL, Time and Wifis" 
                    HorizontalOptions="Center" />
 

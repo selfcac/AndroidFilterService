@@ -36,7 +36,11 @@ namespace AndroidApp
 
         private static void SetupAndroidBridge()
         {
-            AndroidBridge.WifiScanningCallback = new Action<List<string>,TimeSpan?, Exception>((list,timespan, ex) =>
+
+            FilterUtils.WifiPeriodicChecker.InitWifiChecker();
+
+            //AndroidBridge.WifiScanningCallback
+            var a = new Action<List<string>,TimeSpan?, Exception>((list,timespan, ex) =>
             {
                 if (ex == null)
                 {
@@ -60,19 +64,12 @@ namespace AndroidApp
 
                 // TODO:
                 /*
-                 * Periodic job to check wifi zone (start+stop while service live)
-                 *      * Check if theter
-                 * Test wifi zones
-                 * Web server + view why page ( + check api)
-                 * URL + time import export policies
-                 * Lock\Unlocked
                  * System info (wifi zone, lock time, service state, etc...)
                 */
 
             });
 
-            AndroidBridge.OnForgroundServiceStart = new Action(() => { AndroidBridge.ToastIt("Service Start"); });
-            AndroidBridge.OnForgroundServiceStop = new Action(() => { AndroidBridge.ToastIt("Service Stop"); });
+           
 
         }
 

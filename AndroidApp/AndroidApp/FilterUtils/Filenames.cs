@@ -42,7 +42,7 @@ namespace AndroidApp.FilterUtils
         // Public:
         public static readonly RelativeFilePath BLOCK_LOG = new RelativeFilePath("block_log.txt");
 
-        public RelativeFilePath[] EXPOSED_POLICIES = new[]
+        public static RelativeFilePath[] EXPOSED_POLICIES = new[]
         {
             WIFI_POLICY, HTTP_POLICY, TIME_POLICY
         };

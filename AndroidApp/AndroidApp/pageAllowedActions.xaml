@@ -8,12 +8,12 @@
             <Button x:Name="btnCheckLocked" Text="Is unlocked?" Clicked="BtnCheckLocked_Clicked" ></Button>
 
             <StackLayout Orientation="Horizontal">
-                <Button Text="Serivce Start" WidthRequest="150" x:Name="btnStartService" ></Button>
-                <Button Text="Restart" x:Name="btnRestartService" ></Button>
+                <Button x:Name="btnStartService" Text="Serivce Start" Clicked="BtnStartService_Clicked"></Button>
+                <Button x:Name="btnStopService" Text="Serivce Stop"  Clicked="BtnStopService_Clicked"></Button>
             </StackLayout>
-            <Button Text="Start filtering" ></Button>
-            
-            <Button Text="Export Policies" ></Button>
+            <Button x:Name="btnStartFiltering" Text="Start filtering" Clicked="BtnStartFiltering_Clicked"></Button>
+
+            <Button x:Name="btnExportFiles" Text="Export Policies" Clicked="BtnExportFiles_Clicked" ></Button>
             <!-- Expose \ Import Files Wifi + Policies  (except pass file) -->
         </StackLayout>
     </ScrollView>

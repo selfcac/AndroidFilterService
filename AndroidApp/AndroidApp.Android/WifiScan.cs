@@ -80,7 +80,7 @@ namespace AndroidApp.Droid
             {
                 string name = wifi.Ssid;
                 string mac_addr = wifi.Bssid;
-                return string.Format("{0}>{1}", mac_addr, name );
+                return string.Format("{0};{1}", mac_addr, name );
             }
 
             public override void OnReceive(Context context, Intent intent)
