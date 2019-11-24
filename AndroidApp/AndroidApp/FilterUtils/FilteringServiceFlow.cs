@@ -52,19 +52,30 @@ namespace AndroidApp.FilterUtils
             }
         }
 
-        public void StartPeriodicTasks()
+        public void scheduleRepeated()
         {
-            int taskID = AndroidBridge.scheduleJob(
-                null, null, WIFI_PERIOD,
-                (onJobDone)  => {
-                    AndroidBridge.StartWifiScanning();
-                    onJobDone(false); // wants rescedule?
-                }
-                , null, null, null);
+            int taskID = AndroidBridge.scheduleJob(WIFI_PERIOD, WIFI_PERIOD + TimeSpan.FromSeconds(10), null,
+               (finishFunc) => {
+                   if (AndroidBridge.isForegroundServiceUp())
+                   {
+                       AndroidBridge.StartWifiScanning();
+                       scheduleRepeated();
+                   }
+                   finishFunc(false);
+               },
+               () => AndroidBridge.isForegroundServiceUp(),
+               null,
+               () => false
+               );
             if (taskID < 0)
             {
-                AndroidBridge.e(TAG, "Failed to schedule jog.");
+                AndroidBridge.e(TAG, "Failed to schedule job.");
             }
+        }
+
+        public void StartPeriodicTasks()
+        {
+            scheduleRepeated();
         }
 
         public void StopFlow()
