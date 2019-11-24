@@ -17,7 +17,7 @@ namespace AndroidApp.FilterUtils
             {
                 var jsonObject = JObject.Parse(jsonBody);
                 var version = jsonObject["v"].ToString();
-                if (version == "\"1\"")
+                if (version == "1")
                 {
                     var domainName = jsonObject["domainName"];
                     result = domainName.ToString();

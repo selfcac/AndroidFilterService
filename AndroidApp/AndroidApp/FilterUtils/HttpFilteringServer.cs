@@ -17,8 +17,11 @@ namespace AndroidApp.FilterUtils
 {
     class HttpFilteringServer
     {
-        const int port = 8000;
         static readonly string TAG = typeof(HttpFilteringServer).Name.ToString();
+
+        const int port = 8000;
+        const string ContentHTML = "text/html; charset=UTF-8";
+        const string ContentJSON = "application/json";
 
         //https://github.com/1iveowl/SimpleHttpListener.Rx
         CancellationTokenSource cancellationTokenSource;
@@ -30,6 +33,43 @@ namespace AndroidApp.FilterUtils
             return ip.Address + "^" + ip.Port;
         }
 
+        string stringHTML(string body = "", string title = "")
+        {
+            string result = "";
+            try
+            {
+                result =
+                    AndroidApp.Properties.Resources.EmptyHTML
+                    .Replace("{title}", title)
+                    .Replace("{body}", body)
+                    ;
+            }
+            catch (Exception ex)
+            {
+                AndroidBridge.e(TAG, ex.ToString());
+            }
+            return result;
+        }
+
+        string readReqBodyAsString(IHttpRequestResponse req)
+        {
+            string result = "";
+            try
+            {
+                if (req.Body != null && req.Body.Length > 0)
+                {
+                    StreamReader reader = new StreamReader(req.Body);
+                    req.Body.Position = 0;
+                    result = reader.ReadToEnd();
+                }
+            }
+            catch (Exception ex)
+            {
+                AndroidBridge.e(TAG, ex.ToString());
+            }
+            return result;
+        }
+    
         public void Start(int port)
         {
             try
@@ -68,28 +108,35 @@ namespace AndroidApp.FilterUtils
             {
                 AndroidBridge.e(TAG, ex.ToString());
             }
-        }
+        }   
 
-        string readReqBodyString(IHttpRequestResponse req)
+        public void Stop()
         {
-            string result = "";
             try
             {
-                if (req.Body != null && req.Body.Length > 0)
-                {
-                    StreamReader reader = new StreamReader(req.Body);
-                    req.Body.Position = 0;
-                    result = reader.ReadToEnd();
-                }
+                AndroidBridge.d(TAG, "Closing server");
+                cancellationTokenSource?.Cancel();
+                myServerInstance?.Dispose();
+                myListener?.Stop();
             }
             catch (Exception ex)
             {
                 AndroidBridge.e(TAG, ex.ToString());
             }
-            return result;
         }
 
-        string echoBody(IHttpRequestResponse req)
+        public void StartHttpServer()
+        {
+            Start(port);
+        }
+      
+        public void StopHTTPServer()
+        {
+            Stop();
+        }
+
+
+        string EP_echo(IHttpRequestResponse req)
         {
             string result = "";
             try
@@ -101,7 +148,7 @@ namespace AndroidApp.FilterUtils
                     headers += $"{key}: {req.Headers[key]}\r\n";
                 }
 
-                string sentBody = readReqBodyString(req);
+                string sentBody = readReqBodyAsString(req);
 
                 result =
                     AndroidApp.Properties.Resources.Echo
@@ -118,12 +165,12 @@ namespace AndroidApp.FilterUtils
             return result;
         }
 
-        string checkDomain(IHttpRequestResponse req)
+        string EP_checkDomain(IHttpRequestResponse req)
         {
             string result = "";
             try
             {
-                var reqJSON = readReqBodyString(req);
+                var reqJSON = readReqBodyAsString(req);
                 string domain = SpinResultHelper.getDomainName(reqJSON).Trim(new char[] { ' ', '"' });
                 domainHistory.Add(domain);
 
@@ -137,26 +184,8 @@ namespace AndroidApp.FilterUtils
             return result;
         }
 
-        string stringHTML(string body = "", string title = "")
-        {
-            string result = "";
-            try
-            {
-                result =
-                    AndroidApp.Properties.Resources.EmptyHTML
-                    .Replace("{title}", title)
-                    .Replace("{body}", body)
-                    ;
-            }
-            catch (Exception ex)
-            {
-                AndroidBridge.e(TAG, ex.ToString());
-            }
-            return result;
-        }
-
         List<string> domainHistory = new List<string>();
-        string domainHistoryList(IHttpRequestResponse req)
+        string EP_domainHistory(IHttpRequestResponse req)
         {
             string result = "";
             try
@@ -170,9 +199,6 @@ namespace AndroidApp.FilterUtils
             }
             return result;
         }
-
-        const string ContentHTML = "text/html; charset=UTF-8";
-        const string ContentJSON = "application/json";
 
         async Task SendResponseAsync(IHttpRequestResponse request, HttpSender httpSender)
         {
@@ -188,17 +214,17 @@ namespace AndroidApp.FilterUtils
                     if (path.StartsWith("/echo"))
                     {
                         responseContentType = ContentHTML;
-                        responseBody = echoBody(request);
+                        responseBody = EP_echo(request);
                     }
                     else if (path.StartsWith("/history"))
                     {
                         responseContentType = ContentHTML;
-                        responseBody = domainHistoryList(request);
+                        responseBody = EP_domainHistory(request);
                     }
                     else if (path.StartsWith("/check"))
                     {
                         responseContentType = ContentJSON;
-                        responseBody = checkDomain(request);
+                        responseBody = EP_checkDomain(request);
                     }
 
                     var response = new HttpResponse
@@ -226,35 +252,6 @@ namespace AndroidApp.FilterUtils
             {
                 AndroidBridge.e(TAG, ex.ToString());
             }
-        }
-
-        public void Stop()
-        {
-            try
-            {
-                AndroidBridge.d(TAG, "Closing server");
-                cancellationTokenSource?.Cancel();
-                myServerInstance?.Dispose();
-                myListener?.Stop();
-            }
-            catch (Exception ex)
-            {
-                AndroidBridge.e(TAG, ex.ToString());
-            }
-        }
-
-
-
-
-        public void StartHttpServer()
-        {
-            Start(port);
-        }
-
-      
-        public void StopHTTPServer()
-        {
-            Stop();
         }
     }
 }
