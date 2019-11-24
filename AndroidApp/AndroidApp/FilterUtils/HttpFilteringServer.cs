@@ -69,7 +69,12 @@ namespace AndroidApp.FilterUtils
             }
             return result;
         }
-    
+
+        string reasonToHTML(string reason)
+        {
+            return reason.Replace("<*", "<b>").Replace("*>", "</b>").Replace("_<", "<u>").Replace(">_", "</u>");
+        }
+
         public void Start(int port)
         {
             try
@@ -135,6 +140,26 @@ namespace AndroidApp.FilterUtils
             Stop();
         }
 
+        private static bool isBlockedFullFlow(Uri url, out string reason)
+        {
+            reason = "Not blocked.";
+            bool isBlocked = false;
+            if (FilteringObjects.isInWifiBlockZone && FilteringObjects.isFiltering)
+            {
+                string http_reason = "";
+                if (FilteringObjects.timePolicy.isBlockedNow())
+                {
+                    isBlocked = true;
+                    reason = "Timed blocked at " + DateTime.Now.ToString();
+                }
+                else if (!FilteringObjects.httpPolicy.isWhitelistedURL(url, out http_reason))
+                {
+                    isBlocked = true;
+                    reason = http_reason;
+                }
+            }
+            return isBlocked;
+        }
 
         string EP_echo(IHttpRequestResponse req)
         {
@@ -169,21 +194,22 @@ namespace AndroidApp.FilterUtils
         string EP_show_reason(IHttpRequestResponse req)
         {
             string result = "";
+            string prefix = "url=";
             try
             {
-                string reason = "No q found";
+                string reason = "No url found";
 
-                if (!string.IsNullOrEmpty(reason))
+                if (!string.IsNullOrEmpty(req.QueryString))
                 {
-                    int startIndex = req.QueryString.IndexOf("q=");
+                    int startIndex = req.QueryString.IndexOf(prefix);
                     if (startIndex > -1)
                     {
-                        Uri url = new Uri(System.Net.WebUtility.UrlDecode(req.QueryString.Substring(startIndex + 2)));
-                        reason = isBlockedFullFlow(url);
+                        Uri url = new Uri(System.Net.WebUtility.UrlDecode(req.QueryString.Substring(startIndex + prefix.Length)));
+                        isBlockedFullFlow(url, out reason);
                     }
                 }
 
-                result = AndroidApp.Properties.Resources.BlockedPage.Replace("{0}", reason);
+                result = AndroidApp.Properties.Resources.BlockedPage.Replace("{0}", reasonToHTML(reason));
             }
             catch (Exception ex)
             {
@@ -193,26 +219,7 @@ namespace AndroidApp.FilterUtils
             return result;
         }
 
-        private static string isBlockedFullFlow(Uri url)
-        {
-            string reason = "Not blocked.";
-            bool isBlocked = true;
-            if (FilteringObjects.isInWifiBlockZone && FilteringObjects.isFiltering)
-            {
-                string http_reason = "";
-                if (FilteringObjects.timePolicy.isBlockedNow())
-                {
-                    isBlocked = true;
-                    reason = "Timed blocked at " + DateTime.Now.ToString();
-                }
-                else if (!FilteringObjects.httpPolicy.isWhitelistedURL(url, out http_reason))
-                {
-                    isBlocked = true;
-                    reason = http_reason;
-                }
-            }
-            return reason;
-        }
+        
 
         string EP_checkDomain(IHttpRequestResponse req)
         {
@@ -223,7 +230,24 @@ namespace AndroidApp.FilterUtils
                 string domain = SpinResultHelper.getDomainName(reqJSON).Trim(new char[] { ' ', '"' });
                 domainHistory.Add(domain);
 
-                bool block = domain.Contains("yoni");
+                string reason = "";
+                bool block = isBlockedFullFlow(new Uri(domain),out reason);
+
+
+                if (block)
+                {
+                    try
+                    {
+                        File.AppendAllLines(Filenames.BLOCK_LOG.getAppPublic(), new[] {
+                            string.Format("[{0}] {1} {2}", DateTime.Now, domain, reason)
+                        });
+                    }
+                    catch (Exception ex)
+                    {
+                        AndroidBridge.e(TAG, ex);
+                    }
+                }
+
                 result = SpinResultHelper.domainCategoryResult(block);
             }
             catch (Exception ex)
