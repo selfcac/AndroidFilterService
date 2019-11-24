@@ -160,9 +160,58 @@ namespace AndroidApp.FilterUtils
             }
             catch (Exception ex)
             {
+                result = stringHTML(ex.ToString(), "Error");
                 AndroidBridge.e(TAG, ex.ToString());
             }
             return result;
+        }
+
+        string EP_show_reason(IHttpRequestResponse req)
+        {
+            string result = "";
+            try
+            {
+                string reason = "No q found";
+
+                if (!string.IsNullOrEmpty(reason))
+                {
+                    int startIndex = req.QueryString.IndexOf("q=");
+                    if (startIndex > -1)
+                    {
+                        Uri url = new Uri(System.Net.WebUtility.UrlDecode(req.QueryString.Substring(startIndex + 2)));
+                        reason = isBlockedFullFlow(url);
+                    }
+                }
+
+                result = AndroidApp.Properties.Resources.BlockedPage.Replace("{0}", reason);
+            }
+            catch (Exception ex)
+            {
+                result = stringHTML(ex.ToString(), "Error");
+                AndroidBridge.e(TAG, ex.ToString());
+            }
+            return result;
+        }
+
+        private static string isBlockedFullFlow(Uri url)
+        {
+            string reason = "Not blocked.";
+            bool isBlocked = true;
+            if (FilteringObjects.isInWifiBlockZone && FilteringObjects.isFiltering)
+            {
+                string http_reason = "";
+                if (FilteringObjects.timePolicy.isBlockedNow())
+                {
+                    isBlocked = true;
+                    reason = "Timed blocked at " + DateTime.Now.ToString();
+                }
+                else if (!FilteringObjects.httpPolicy.isWhitelistedURL(url, out http_reason))
+                {
+                    isBlocked = true;
+                    reason = http_reason;
+                }
+            }
+            return reason;
         }
 
         string EP_checkDomain(IHttpRequestResponse req)
@@ -179,6 +228,7 @@ namespace AndroidApp.FilterUtils
             }
             catch (Exception ex)
             {
+                result = "{\"error\":\"0\"}".Replace("0", ex.ToString());
                 AndroidBridge.e(TAG, ex.ToString());
             }
             return result;
@@ -225,6 +275,11 @@ namespace AndroidApp.FilterUtils
                     {
                         responseContentType = ContentJSON;
                         responseBody = EP_checkDomain(request);
+                    }
+                    else if (path.StartsWith("/reason"))
+                    {
+                        responseContentType = ContentHTML;
+                        responseBody = EP_show_reason(request);
                     }
 
                     var response = new HttpResponse

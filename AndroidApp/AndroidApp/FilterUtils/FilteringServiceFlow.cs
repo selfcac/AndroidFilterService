@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Text;
 
 namespace AndroidApp.FilterUtils
@@ -16,27 +17,38 @@ namespace AndroidApp.FilterUtils
 
         public void StartFlow()
         {
-            if (!AndroidBridge.isForegroundServiceUp())
+            try
             {
-                AndroidBridge.OnForgroundServiceStart = () =>
-                {
-                    AndroidBridge.d(TAG, "Starting filtering flow");
-                    myHTTPServer.StartHttpServer();
-                    StartPeriodicTasks();
-                };
+                // Reload policies:
+                FilteringObjects.httpPolicy.reloadPolicy(File.ReadAllText(Filenames.HTTP_POLICY.getAppPrivate()));
+                FilteringObjects.timePolicy.reloadPolicy(File.ReadAllText(Filenames.TIME_POLICY.getAppPrivate()));
 
-                AndroidBridge.OnForgroundServiceStop = () =>
+                if (!AndroidBridge.isForegroundServiceUp())
                 {
-                    AndroidBridge.d(TAG, "Stopping filtering flow");
-                    StopPeriodicTasks();
-                    myHTTPServer.StopHTTPServer();
-                };
+                    AndroidBridge.OnForgroundServiceStart = () =>
+                    {
+                        AndroidBridge.d(TAG, "Starting filtering flow");
+                        myHTTPServer.StartHttpServer();
+                        StartPeriodicTasks();
+                    };
 
-                AndroidBridge.StartForgroundService();
+                    AndroidBridge.OnForgroundServiceStop = () =>
+                    {
+                        AndroidBridge.d(TAG, "Stopping filtering flow");
+                        StopPeriodicTasks();
+                        myHTTPServer.StopHTTPServer();
+                    };
+
+                    AndroidBridge.StartForgroundService();
+                }
+                else
+                {
+                    AndroidBridge.ToastIt("Service already up!");
+                }
             }
-            else
+            catch (Exception ex)
             {
-                AndroidBridge.ToastIt("Service already up!");
+                AndroidBridge.e(TAG, ex);
             }
         }
 
