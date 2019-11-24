@@ -1,0 +1,51 @@
+﻿<html>
+<body>
+
+    <h1>Headers we got:</h1>
+    <pre>
+{0}
+    </pre>
+
+    <h1>Body we got:</h1>
+    <pre>
+{1}
+    </pre>
+
+    <h1>Method: <b>{2}</b></h1>
+
+    <h1>Path: <b>{3}</b></h1>
+
+
+    <br />
+    <form method="post">
+        <input type="hidden" name="a" value="im hidden" />
+        <input type="submit" value="Send this!" />
+    </form>
+
+    <script>
+        function alertPost(url, bodyString) {
+            fetch(url, {
+                method: "POST",
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: bodyString
+            })
+                .then((r) => r.json())
+                .then((r) => alert(JSON.stringify(r)))
+        }
+
+        function sendTestDomain1() {
+            var test1 = { "domainName": "pdddub.com", "key": "", "v": "1" }
+            alertPost("/check", JSON.stringify(test1));
+        }
+
+        function sendTestDomain2() {
+            var test1 = { "domainName": "yoni.com", "key": "", "v": "1" }
+            alertPost("/check", JSON.stringify(test1));
+        }
+    </script>
+    <input type="button" onclick="sendTestDomain1()" value="Test domains ok" />
+    <input type="button" onclick="sendTestDomain2()" value="Test domains bad" />
+</body>
+</html>
