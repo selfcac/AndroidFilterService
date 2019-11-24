@@ -15,9 +15,10 @@
             <Button x:Name="btnLockedPage" Text="Locked actions" Clicked="BtnLockedPage_Clicked" 
                     BackgroundColor="IndianRed" TextColor="White" Margin="5"/>
 
-            <Button x:Name="btnInfoPage" Text="System Info" Clicked="BtnInfoPage_Clicked" 
+            <Button x:Name="btnInfoPage" Text="V | System Info | V" Clicked="BtnInfoPage_Clicked" 
                      Margin="5"/>
-            
+            <Label x:Name="lblInfo" BackgroundColor="Yellow" TextColor="Black" />
+
             <Label Text="selfCAC @ github.com"></Label>
         </StackLayout>
 

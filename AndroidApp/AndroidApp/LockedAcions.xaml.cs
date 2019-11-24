@@ -21,11 +21,6 @@ namespace AndroidApp
 			InitializeComponent ();
 		}
 
-        private void BtnDebugUnlock_Clicked(object sender, EventArgs e)
-        {
-            FilterUtils.TimeLock.ForceUnlockNow();
-        }
-
         private async void BtnLock_Clicked(object sender, EventArgs e)
         {
             await FilterUtils.TimeLock.onlyUnlockedAsync(async () =>

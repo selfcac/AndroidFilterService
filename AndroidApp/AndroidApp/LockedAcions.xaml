@@ -15,8 +15,6 @@
             <Label Text="URL, Time and Wifis" 
                    HorizontalOptions="Center" />
 
-            <Button x:Name="btnDebugUnlock" Text="!!!DEBUG!!! Unlock" 
-                    Clicked="BtnDebugUnlock_Clicked" BackgroundColor="LightSalmon"/>
         </StackLayout>
     </ScrollView>
 </ContentPage>

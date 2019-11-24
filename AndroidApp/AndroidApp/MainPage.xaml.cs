@@ -39,7 +39,21 @@ namespace AndroidApp
 
         private void BtnInfoPage_Clicked(object sender, EventArgs e)
         {
-
+            try
+            {
+                lblInfo.Text = string.Format("[{0}] BlockZone? {1}, Filtering? {2}, Service up? {3}, Blocked now? {4}, Locked? {5} ",
+                   DateTime.Now,
+                   FilterUtils.FilteringObjects.isInWifiBlockZone,
+                   FilterUtils.FilteringObjects.isFiltering,
+                   AndroidBridge.isForegroundServiceUp(),
+                   FilterUtils.FilteringObjects.timePolicy.isBlockedNow(),
+                   FilterUtils.TimeLock.isLocked()
+                   );
+            }
+            catch (Exception ex)
+            {
+                AndroidBridge.e(TAG, ex);
+            }
         }
     }
 }
