@@ -39,7 +39,7 @@ namespace AndroidApp.FilterUtils
                         if (!File.Exists(Filenames.WIFI_POLICY.getAppPrivate()))
                             File.WriteAllText(Filenames.WIFI_POLICY.getAppPrivate(), "");
 
-                        IEnumerable<string> currentRules = File.ReadLines(Filenames.WIFI_POLICY.getAppPrivate());
+                        IEnumerable<string> currentRules = File.ReadAllLines(Filenames.WIFI_POLICY.getAppPrivate());
                         List<string> newRules = new List<string>();
 
                         inBadZoneResult = CheckBlacklistedWifi.WifiHelper.fastBlockZoneCheck(wifiLists, currentRules, out newRules,
