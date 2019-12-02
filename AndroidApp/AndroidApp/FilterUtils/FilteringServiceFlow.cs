@@ -7,7 +7,11 @@ namespace AndroidApp.FilterUtils
 {
     class FilteringServiceFlow
     {
-        public static readonly TimeSpan WIFI_PERIOD = TimeSpan.FromMinutes(1);
+        // Blocked state has slower freq, user has motivation to check manually to get out of blockzone
+        public static readonly TimeSpan WIFI_PERIOD_BLOCKED = TimeSpan.FromMinutes(10); 
+        public static readonly TimeSpan WIFI_PERIOD_ALLOWED = TimeSpan.FromMinutes(5);
+
+
         static readonly string TAG = typeof(FilteringServiceFlow).Name.ToString();
 
         HttpFilteringServer myHTTPServer = new HttpFilteringServer();
@@ -54,6 +58,9 @@ namespace AndroidApp.FilterUtils
 
         public void scheduleRepeated()
         {
+            TimeSpan WIFI_PERIOD = (FilteringObjects.isFiltering && FilteringObjects.isInWifiBlockZone) ?
+                WIFI_PERIOD_BLOCKED : WIFI_PERIOD_ALLOWED;
+
             int taskID = AndroidBridge.scheduleJob(WIFI_PERIOD, WIFI_PERIOD + TimeSpan.FromSeconds(10), null,
                (finishFunc) => {
                    if (AndroidBridge.isForegroundServiceUp())

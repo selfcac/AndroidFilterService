@@ -5,11 +5,11 @@
              Title="Tests">
     <ScrollView Orientation="Vertical">
         <StackLayout Orientation="Vertical">
-            <!--
+            <!--  
             <Button x:Name="btnPeriodic" Text="Periodic Task" Clicked="BtnPeriodic_Clicked" />
             
             <Button x:Name="btnScanWifiNow" Text="Get Wifi Now" Clicked="BtnScanWifiNow_Clicked"></Button>
-            --!>
+            -->
         </StackLayout>
     </ScrollView>
 </ContentPage>

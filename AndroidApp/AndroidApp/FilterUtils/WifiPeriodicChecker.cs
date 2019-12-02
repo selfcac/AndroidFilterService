@@ -25,7 +25,7 @@ namespace AndroidApp.FilterUtils
             else
             {
                 TimeSpan actualTime = (timeSinceLastScan ?? TimeSpan.FromDays(1));
-                if (actualTime > FilteringServiceFlow.WIFI_PERIOD)
+                if (actualTime > FilteringServiceFlow.WIFI_PERIOD_BLOCKED)
                 {
                     // Dont even check, bad zone:
                     FilteringObjects.isInWifiBlockZone = true;
@@ -43,7 +43,7 @@ namespace AndroidApp.FilterUtils
                         List<string> newRules = new List<string>();
 
                         inBadZoneResult = CheckBlacklistedWifi.WifiHelper.fastBlockZoneCheck(wifiLists, currentRules, out newRules,
-                            (log) => { AndroidBridge.d(TAG, "[CheckBlacklistedWifi] " + log); }
+                            (log) => {/* AndroidBridge.d(TAG, "[CheckBlacklistedWifi] " + log);*/ }
                             );
 
                         File.WriteAllLines(Filenames.WIFI_POLICY.getAppPrivate(), newRules);
@@ -58,6 +58,7 @@ namespace AndroidApp.FilterUtils
                     if (FilteringObjects.isInWifiBlockZone != inBadZoneResult)
                         AndroidBridge.ToastIt("Changing blackzone to: " + inBadZoneResult);
                     FilteringObjects.isInWifiBlockZone = inBadZoneResult;
+                    AndroidBridge.d(TAG, "Wifi check: Blackzone? " + inBadZoneResult);
                 }
             }
         }

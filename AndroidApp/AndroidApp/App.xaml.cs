@@ -39,35 +39,35 @@ namespace AndroidApp
 
             FilterUtils.WifiPeriodicChecker.InitWifiChecker();
 
-            //AndroidBridge.WifiScanningCallback
-            var a = new Action<List<string>,TimeSpan?, Exception>((list,timespan, ex) =>
-            {
-                if (ex == null)
-                {
-                    TimeSpan last = timespan ?? TimeSpan.FromDays(1);
+            ////AndroidBridge.WifiScanningCallback
+            //var a = new Action<List<string>,TimeSpan?, Exception>((list,timespan, ex) =>
+            //{
+            //    if (ex == null)
+            //    {
+            //        TimeSpan last = timespan ?? TimeSpan.FromDays(1);
 
-                    string wifiInfo = string.Format(
-                        "Sucess? {0} Got {1}, Time: {2}, First: {3}",
-                        (ex == null),
-                        list?.Count ?? -1,
-                        last,
-                        (list != null && list.Count > 0) ? list[0] : "<none>"
-                    );
-                    AndroidBridge.d(TAG, wifiInfo);
-                    AndroidBridge.ToastIt(wifiInfo);
-                }
-                else
-                {
-                    AndroidBridge.e(TAG, ex);
-                    AndroidBridge.ToastIt("Wifi failed: '" + ex.Message + "'");
-                }
+            //        string wifiInfo = string.Format(
+            //            "Sucess? {0} Got {1}, Time: {2}, First: {3}",
+            //            (ex == null),
+            //            list?.Count ?? -1,
+            //            last,
+            //            (list != null && list.Count > 0) ? list[0] : "<none>"
+            //        );
+            //        AndroidBridge.d(TAG, wifiInfo);
+            //        AndroidBridge.ToastIt(wifiInfo);
+            //    }
+            //    else
+            //    {
+            //        AndroidBridge.e(TAG, ex);
+            //        AndroidBridge.ToastIt("Wifi failed: '" + ex.Message + "'");
+            //    }
 
-                // TODO:
-                /*
-                 * System info (wifi zone, lock time, service state, etc...)
-                */
+            //    // TODO:
+            //    /*
+            //     * System info (wifi zone, lock time, service state, etc...)
+            //    */
 
-            });
+            //});
 
            
 
