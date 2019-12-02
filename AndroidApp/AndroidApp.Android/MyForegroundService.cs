@@ -149,7 +149,6 @@ namespace AndroidApp.Droid
                     .SetSmallIcon(Resource.Drawable.ic_notfiy_icon)
                     .SetContentIntent(BuildIntentToShowMainActivity())
                     .SetOngoing(true)
-                    .AddAction(BuildAction(ACTION_RESTART_SERVICE, Android.Resource.Drawable.IcMediaPause, "Restart"))
                     .SetChannelId(notifChannel.Id)
                     .SetPriority((int)NotificationPriority.Min) // Hide in oreo+
                     .Build();
