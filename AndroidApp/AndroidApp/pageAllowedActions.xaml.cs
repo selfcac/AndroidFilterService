@@ -58,5 +58,11 @@ namespace AndroidApp
         {
             FilteringServiceFlow.INSTANCE.StopFlow();
         }
+
+
+        private void BtnScanWifi_Clicked(object sender, EventArgs e)
+        {
+            AndroidBridge.StartWifiScanning();
+        }
     }
 }
