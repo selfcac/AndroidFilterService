@@ -53,9 +53,12 @@ namespace AndroidApp
             });
         }
 
-        private void BtnStopFiltering_Clicked(object sender, EventArgs e)
+        private async void BtnStopFiltering_Clicked(object sender, EventArgs e)
         {
-            FilterUtils.FilteringObjects.isFiltering = false;
+            await FilterUtils.TimeLock.onlyUnlocked(() =>
+            {
+                FilterUtils.FilteringObjects.isFiltering = false;
+            });
         }
 
         private void BtnImportPolicies_Clicked(object sender, EventArgs e)
