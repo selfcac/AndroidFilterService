@@ -62,6 +62,7 @@ namespace AndroidApp
 
         private void BtnScanWifi_Clicked(object sender, EventArgs e)
         {
+            WifiPeriodicChecker.showReason = true;
             AndroidBridge.StartWifiScanning();
         }
     }

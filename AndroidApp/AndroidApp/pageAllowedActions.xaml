@@ -6,7 +6,7 @@
     <ScrollView>
         <StackLayout Orientation="Vertical">
             <Button x:Name="btnCheckLocked" Text="Is unlocked?" Clicked="BtnCheckLocked_Clicked" ></Button>
-            <Button x:Name="btnScanWifi" Text="Start Wifi Scan" Clicked="BtnScanWifi_Clicked"></Button>
+            <Button x:Name="btnScanWifi" Text="Start Wifi Scan + Reason" Clicked="BtnScanWifi_Clicked"></Button>
 
             <StackLayout Orientation="Horizontal">
                 <Button x:Name="btnStartService" Text="Serivce Start" Clicked="BtnStartService_Clicked"></Button>

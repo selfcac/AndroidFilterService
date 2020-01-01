@@ -8,19 +8,25 @@ namespace AndroidApp.FilterUtils
     class WifiPeriodicChecker
     {
         static readonly string TAG = typeof(WifiPeriodicChecker).Name.ToString();
+        public static bool showReason = false;
 
         public static void InitWifiChecker()
         {
             AndroidBridge.WifiScanningCallback = WifiCheckerCallback;
         }
 
-        public static void WifiCheckerCallback(List<string> wifiLists, TimeSpan? timeSinceLastScan, Exception ex)
+        public static void WifiCheckerCallback(List<string> wifiLists, TimeSpan? timeSinceLastScan, Exception callbackEx)
         {
-            if (ex != null)
+            string reason = "init";
+            bool shouldLogDebug = false;
+
+            if (callbackEx != null)
             {
                 // Dont even check, bad zone:
                 FilteringObjects.isInWifiBlockZone = true;
-                AndroidBridge.d(TAG, "Wifi in bad zone because exepction.\n" + ex.ToString());
+
+                reason = "callback with exepction.";
+                shouldLogDebug = true;
             }
             else
             {
@@ -29,7 +35,9 @@ namespace AndroidApp.FilterUtils
                 {
                     // Dont even check, bad zone:
                     FilteringObjects.isInWifiBlockZone = true;
-                    AndroidBridge.d(TAG, "Wifi in bad zone because results are old (" + actualTime + ")");
+
+                    reason = "results are old, wifi off? (Time: " + actualTime + ")";
+                    shouldLogDebug = true;
                 }
                 else
                 {
@@ -42,25 +50,45 @@ namespace AndroidApp.FilterUtils
                         IEnumerable<string> currentRules = File.ReadAllLines(Filenames.WIFI_POLICY.getAppPrivate());
                         List<string> newRules = new List<string>();
 
+                        //TODO Reason what wifi blocked.
+
                         inBadZoneResult = CheckBlacklistedWifi.WifiHelper.fastBlockZoneCheck(wifiLists, currentRules, out newRules,
-                            (log) => {/* AndroidBridge.d(TAG, "[CheckBlacklistedWifi] " + log);*/ }
+                            (log) => {/* AndroidBridge.d(TAG, "[CheckBlacklistedWifi] " + log);*/ } ,out reason
                             );
 
                         File.WriteAllLines(Filenames.WIFI_POLICY.getAppPrivate(), newRules);
-
                     }
                     catch (Exception ex2)
                     {
                         AndroidBridge.e(TAG, ex2);
                         inBadZoneResult = false; // allow in case of exceptions...
+
+                        reason = "Exception processing Wifi Algo";
                     }
 
-                    if (FilteringObjects.isInWifiBlockZone != inBadZoneResult)
+                    if (!showReason && FilteringObjects.isInWifiBlockZone != inBadZoneResult)
                         AndroidBridge.ToastIt("Changing blackzone to: " + inBadZoneResult);
+
                     FilteringObjects.isInWifiBlockZone = inBadZoneResult;
-                    AndroidBridge.d(TAG, "Wifi check: Blackzone? " + inBadZoneResult);
                 }
             }
+
+            reason = "[Blockzone? " + FilteringObjects.isInWifiBlockZone + "] " + reason;
+
+            if (showReason)
+            {
+                AndroidBridge.ToastIt(reason);
+                showReason = false; // Reset it until user mark it again.
+            }
+
+            if (shouldLogDebug)
+            {
+                if (callbackEx != null)
+                {
+                    reason += "\nCallback Exception:\n" + callbackEx.ToString();
+                }
+                AndroidBridge.d(TAG, reason);
+            }            
         }
         
     }
