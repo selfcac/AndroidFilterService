@@ -52,7 +52,7 @@ namespace AndroidApp.FilterUtils
 
                         //TODO Reason what wifi blocked.
 
-                        inBadZoneResult = CheckBlacklistedWifi.WifiHelper.fastBlockZoneCheck(wifiLists, currentRules, out newRules,
+                        inBadZoneResult = CheckBlacklistedWifiStandard.WifiHelper.fastBlockZoneCheck(wifiLists, currentRules, out newRules,
                             (log) => {/* AndroidBridge.d(TAG, "[CheckBlacklistedWifi] " + log);*/ } ,out reason
                             );
 

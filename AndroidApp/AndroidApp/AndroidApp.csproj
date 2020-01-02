@@ -16,8 +16,8 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Reference Include="CheckBlacklistedWifi">
-      <HintPath>..\..\..\FilteringComponentsStandard\CheckBlacklistedWifi\bin\Debug\netstandard2.0\CheckBlacklistedWifi.dll</HintPath>
+    <Reference Include="CheckBlacklistedWifiStandard">
+      <HintPath>..\..\..\FilteringComponentsStandard\CheckBlacklistedWifi\bin\Debug\netstandard2.0\CheckBlacklistedWifiStandard.dll</HintPath>
     </Reference>
     <Reference Include="CommonStandard">
       <HintPath>..\..\..\FilteringComponentsStandard\CommonStandard\bin\Debug\netstandard2.0\CommonStandard.dll</HintPath>
