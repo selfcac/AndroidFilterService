@@ -19,6 +19,7 @@
                      Margin="5"/>
             <Label x:Name="lblInfo" BackgroundColor="Yellow" TextColor="Black" />
 
+            <Label x:Name="lblGitStatus"></Label>
             <Label Text="selfCAC @ github.com"></Label>
         </StackLayout>
 

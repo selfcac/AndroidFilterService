@@ -17,6 +17,12 @@ namespace AndroidApp
             InitializeComponent();
         }
 
+        protected override void OnAppearing()
+        {
+            base.OnAppearing();
+            this.lblGitStatus.Text = GitInfo.GetInfo();
+        }
+
         private async void BtnOpenTest_Clicked(object sender, EventArgs e)
         {
             await Application.Current.MainPage.Navigation.PushAsync(new TestPage());
