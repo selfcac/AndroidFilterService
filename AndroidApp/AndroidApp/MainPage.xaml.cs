@@ -15,13 +15,9 @@ namespace AndroidApp
         public MainPage()
         {
             InitializeComponent();
-        }
 
-        protected override void OnAppearing()
-        {
-            base.OnAppearing();
-            this.lblGitStatus.Text = GitInfo.GetInfo();
         }
+        
 
         private async void BtnOpenTest_Clicked(object sender, EventArgs e)
         {
@@ -47,6 +43,8 @@ namespace AndroidApp
         {
             try
             {
+                this.lblGitStatus.Text = GitInfo.GetInfo();
+
                 lblInfo.Text = string.Format("[{0}] BlockZone? {1}, Filtering? {2}, Service up? {3}, Blocked now? {4}, Locked? {5} ",
                    DateTime.Now,
                    FilterUtils.FilteringObjects.isInWifiBlockZone,
